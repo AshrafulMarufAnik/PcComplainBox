@@ -41,7 +41,6 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     private FirebaseAuth uAuth;
     private DatabaseReference userTokenRef;
     private static final String TAG = "RegisterActivity";
-    public  String GIT;
 
 
     @Override
