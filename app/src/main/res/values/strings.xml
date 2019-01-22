@@ -1,0 +1,38 @@
+<resources>
+    <string name="app_name">FireBaseAuth</string>
+    <string name="enter_your_email"><font size="2">Email</font></string>
+    <string name="enter_your_password"><font size="2">Password</font></string>
+    <string name="name">Name</string>
+    <string name="gender">Gender</string>
+    <string name="occupation">Occupation</string>
+    <string name="phone">Phone</string>
+    <string name="save">Save</string>
+    <string name="as_student">As Student</string>
+    <string name="as_personnel">As Personnel</string>
+    <string name="complain_box">Complain Box</string>
+
+    <string name="nav_open">Open</string>
+    <string name="nav_close">Close</string>
+    <string name="create">Complain</string>
+    <string name="room_no">Room No</string>
+    <string name="description">Description</string>
+    <string name="code">Pc No</string>
+    <string name="complain_fragment_title">Make a Complaint</string>
+    <string name="profile_fragment_title">Your Profile</string>
+    <string name="user_complaints_fragment_title">Your Complaints...</string>
+    <string name="all_complaints_fragment_title">all Complaints...</string>
+    <string name="solved_complaints_fragment_title">Solved Complaints...</string>
+    <string name="unsolved_complaints_fragment_title">Unsolved Complaints...</string>
+    <string name="user_name">Name :</string>
+    <string name="update">Update</string>
+    <string name="password">Password</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="mirza_adnan_hossain">Mirza Adnan Hossain</string>
+    <string name="user">User :</string>
+
+    <string name="search">Search all by Room no..</string>
+
+
+</resources>

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bluepink"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/complain" />
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/pcNumberEtID"
+            style="@style/editTextStyle"
+            android:layout_width="245dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:hint="@string/code"
+            android:inputType="text"
+            android:textSize="16sp" />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/roomNoET"
+            style="@style/editTextStyle"
+            android:layout_width="245dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:hint="@string/room_no"
+            android:inputType="phone"
+            android:textSize="16sp" />
+    </android.support.design.widget.TextInputLayout>
+
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/descriptionID"
+            style="@style/editTextStyle"
+            android:layout_width="245dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:hint="@string/description"
+            android:inputType="text"
+            android:textSize="16sp" />
+    </android.support.design.widget.TextInputLayout>
+
+
+    <ProgressBar
+        android:id="@+id/progressBarID"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
+
+    <Button
+        android:id="@+id/createID"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_marginTop="148dp"
+        android:background="@drawable/buttonstyleithgradient"
+        android:text="Complain"
+        android:textAllCaps="false"
+        android:textColor="#fff"
+        android:textStyle="bold" />
+
+
+</LinearLayout>

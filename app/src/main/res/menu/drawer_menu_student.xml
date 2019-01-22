@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/nv_profile"
+            android:checked="true"
+            android:icon="@drawable/ic_person_black_24dp"
+            android:title="Profile" />
+        <item
+            android:id="@+id/nv_complain"
+            android:icon="@drawable/ic_add_circle_outline_black_24dp"
+            android:title="Create Complaint" />
+        <item
+            android:id="@+id/nv_my_complain"
+            android:icon="@drawable/ic_content_paste_black_24dp"
+            android:title="My Complaints" />
+        <item
+            android:id="@+id/nv_all_complain"
+            android:icon="@drawable/ic_all"
+            android:title="All Complaints" />
+
+    </group>
+
+    <item android:title="Communicate">
+        <menu>
+            <item
+                android:id="@+id/nv_share"
+                android:icon="@drawable/ic_share_black_24dp"
+                android:title="Share" />
+            <item
+                android:id="@+id/nv_signout"
+                android:icon="@drawable/ic_output_black_24dp"
+                android:title="Sign Out" />
+
+        </menu>
+    </item>
+
+</menu>
