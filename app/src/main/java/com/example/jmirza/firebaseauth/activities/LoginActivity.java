@@ -56,7 +56,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void initialization() {
         uAuth = FirebaseAuth.getInstance();
         user = uAuth.getCurrentUser();
-        myRef = FirebaseDatabase.getInstance().getReference();
+        myRef = FirebaseDatabase.getInstance().getReference("users");
         emailEt = findViewById(R.id.emailEtId);
         passEt = findViewById(R.id.passwordEtId);
         loginButton = findViewById(R.id.loginBtnId);
@@ -146,9 +146,95 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
+                                    for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+
+                                        if (dataSnapshot1.child("key").getValue().toString().equals(uId)) {
+
+                                            String userType = dataSnapshot1.child("occupation").getValue().toString();
+
+                                            if (userType.equals("Student")) {
+                                                if (uAuth.getCurrentUser().isEmailVerified()) {
+                                                    myRef.child(uId).child("deviceToken").setValue(deviceToken);
+                                                    finish();
+                                                    Intent intent = new Intent(LoginActivity.this, ProfileActivity.class);
+                                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                                    startActivity(intent);
+
+                                                } else {
+                                                    Toast.makeText(LoginActivity.this, "verify your email to login..", Toast.LENGTH_LONG).show();
+
+                                                }
+
+
+                                            } else if (userType.equals("Personnel")) {
+                                                if (uAuth.getCurrentUser().isEmailVerified()) {
+                                                    myRef.child(uId).child("deviceToken").setValue(deviceToken);
+                                                    finish();
+                                                    Intent intent = new Intent(LoginActivity.this, ProfileActivity.class);
+                                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                                    startActivity(intent);
+
+                                                } else {
+                                                    Toast.makeText(LoginActivity.this, "verify your email to login..", Toast.LENGTH_LONG).show();
+
+                                                }
+
+                                            }
+                                        }
+                                    }
+
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                }
+                            });
+
+
+                        }
+                    }
+
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(getApplicationContext(), "" + e.getMessage(), Toast.LENGTH_LONG).show();
+
+                }
+            });
+        }
+
+    }
+
+   /* private void userLogin() {
+
+        String email = emailEt.getText().toString().trim();
+        String pass = passEt.getText().toString().trim();
+
+        if (checkValidity()) {
+
+        } else {
+            progressBar.setVisibility(View.VISIBLE);
+
+            uAuth.signInWithEmailAndPassword(email, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    progressBar.setVisibility(View.GONE);
+                    if (task.isSuccessful()) {
+                        if (uAuth.getCurrentUser() != null) {
+
+                            uId = uAuth.getCurrentUser().getUid();
+                            final String deviceToken = FirebaseInstanceId.getInstance().getToken();
+
+                            myRef.addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
                                     if (Objects.equals(dataSnapshot.child("student").child(uId).child("occupation").getValue(), "Student")) {
 
                                         if (uAuth.getCurrentUser().isEmailVerified()) {
+                                            myRef.child("student").child(uId).child("deviceToken").setValue(deviceToken);
                                             finish();
                                             Intent intent = new Intent(LoginActivity.this, ProfileActivity.class);
                                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -162,7 +248,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                     } else if (Objects.equals(dataSnapshot.child("personnel").child(uId).child("occupation").getValue(), "Personnel")) {
 
                                         if (uAuth.getCurrentUser().isEmailVerified()) {
-                                            myRef.child("personnel").child(uId).child("messagingToken").setValue(deviceToken);
+                                            myRef.child("personnel").child(uId).child("deviceToken").setValue(deviceToken);
                                             finish();
                                             Intent intent = new Intent(LoginActivity.this, ProfileActivity.class);
                                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -196,7 +282,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             });
         }
 
-    }
+    }*/
 
 
 }

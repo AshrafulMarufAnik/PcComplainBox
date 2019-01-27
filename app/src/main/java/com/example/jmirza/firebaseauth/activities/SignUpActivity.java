@@ -39,7 +39,6 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     RadioGroup radioGroup;
     String userType;
     private FirebaseAuth uAuth;
-    private DatabaseReference userTokenRef;
     private static final String TAG = "RegisterActivity";
 
 
@@ -65,7 +64,6 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         loginTextView.setText(Html.fromHtml(text), TextView.BufferType.SPANNABLE);
         progressBar = findViewById(R.id.progressBarID);
         uAuth = FirebaseAuth.getInstance();
-        userTokenRef = FirebaseDatabase.getInstance().getReference("user_token");
         verifiedEmailEt = findViewById(R.id.versificationTV);
 
     }
@@ -129,7 +127,6 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
                                 String deviceToken = FirebaseInstanceId.getInstance().getToken();
-                                userTokenRef.child("student").setValue(deviceToken);
                                 String userId = uAuth.getCurrentUser().getUid();
                                 Student student = new Student(userId,name, gender, phone, email, pass, occupation, deviceToken);
                                 FirebaseDatabase.getInstance().getReference("users")
@@ -184,7 +181,6 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                             if (task.isSuccessful()) {
 
                                 String deviceToken = FirebaseInstanceId.getInstance().getToken();
-                                userTokenRef.child("personnel").setValue(deviceToken);
                                 String userId = uAuth.getCurrentUser().getUid();
                                 Personnel personnel = new Personnel(userId, name, gender, phone, email, pass, occupation, deviceToken);
                                 FirebaseDatabase.getInstance().getReference("users")
