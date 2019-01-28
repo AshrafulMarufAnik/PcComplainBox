@@ -40,9 +40,7 @@ public class ComplainFragment extends Fragment implements View.OnClickListener {
     public DatabaseReference myRef;
     public View view;
     public ProgressBar progressBar;
-    String uId;
     FirebaseUser user;
-    public static final String CHANNEL_ID = "You have a Complaint";
 
     @Nullable
     @Override
@@ -97,12 +95,12 @@ public class ComplainFragment extends Fragment implements View.OnClickListener {
             progressBar.setVisibility(View.VISIBLE);
             FirebaseUser user = uAuth.getCurrentUser();
             final String complaintUserId = user.getUid();
-            myRef = FirebaseDatabase.getInstance().getReference("student").child(complaintUserId);
+            myRef = FirebaseDatabase.getInstance().getReference("users").child(complaintUserId);
             myRef.addValueEventListener(new ValueEventListener() {
                 String pcNumber = pcNumberEt.getText().toString().trim();
                 String roomNo = roomNumberEt.getText().toString().trim();
                 String description = descriptionEt.getText().toString().trim();
-                String complainStatus="unsolved";
+                String complainStatus="Unsolved";
 
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -110,18 +108,12 @@ public class ComplainFragment extends Fragment implements View.OnClickListener {
 
                     final Complaint complaint =new Complaint(complaintUserId,complaintUserName,pcNumber,roomNo,description,complainStatus);
 
-                    FirebaseDatabase.getInstance().getReference("complaint")
-                            .child(complaintUserId).push().setValue(complaint).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    FirebaseDatabase.getInstance().getReference("complaints")
+                            .push().setValue(complaint).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             progressBar.setVisibility(View.GONE);
                             if (task.isSuccessful()) {
-
-                                final String senderId = complaintUserId;
-                                final String title = complaint.complainUserName.toUpperCase().trim();
-                                final String msgBody = complaint.description.toLowerCase().trim();
-                                final Notification notification = new Notification(senderId,title,msgBody);
-                                sendNotification(title, msgBody);
                                 Toast.makeText(getContext(), "Your complaint submitted successfully  !!", Toast.LENGTH_LONG).show();
                                 startActivity(new Intent(getContext(),ProfileActivity.class));
                             } else {
@@ -143,43 +135,6 @@ public class ComplainFragment extends Fragment implements View.OnClickListener {
 
     }
 
-    private void sendNotification(String title, final String msgBody) {
-            uId=user.getUid();
-            final  String titl=title;
-            final String msg=msgBody;
-
-
-
-            myRef=FirebaseDatabase.getInstance().getReference("user_token");
-            myRef.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                            // to create notification we need notification builder
-                            NotificationCompat.Builder myBuilder =
-                                    new NotificationCompat.Builder(getActivity(), CHANNEL_ID)
-                                            .setSmallIcon(R.drawable.varsity_logo)
-                                            .setContentTitle(titl)
-                                            .setContentText(msg)
-                                            .setPriority(NotificationCompat.PRIORITY_HIGH);
-
-                            // to display notification need this manager and method
-
-                            NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(getActivity());
-                            notificationManagerCompat.notify(1, myBuilder.build());
-
-
-                    }
-
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                }
-            });
-
-
-    }
 
     public boolean checkValidity() {
 
