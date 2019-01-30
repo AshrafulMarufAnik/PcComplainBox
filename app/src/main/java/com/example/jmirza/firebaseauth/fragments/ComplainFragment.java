@@ -6,8 +6,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.NotificationManagerCompat;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,8 +17,7 @@ import android.widget.Toast;
 import com.example.jmirza.firebaseauth.R;
 import com.example.jmirza.firebaseauth.activities.ProfileActivity;
 import com.example.jmirza.firebaseauth.models.Complaint;
-import com.example.jmirza.firebaseauth.models.Notification;
-import com.example.jmirza.firebaseauth.models.Personnel;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -31,7 +28,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.Objects;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 
 public class ComplainFragment extends Fragment implements View.OnClickListener {
     TextInputEditText pcNumberEt, roomNumberEt, descriptionEt;
@@ -104,9 +103,14 @@ public class ComplainFragment extends Fragment implements View.OnClickListener {
 
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                    Calendar calendar = Calendar.getInstance();
+                    SimpleDateFormat mdformat = new SimpleDateFormat("yyyy / MM / dd ");
+                    String date = mdformat.format(calendar.getTime());
+
                     String complaintUserName = (String) dataSnapshot.child("name").getValue();
 
-                    final Complaint complaint =new Complaint(complaintUserId,complaintUserName,pcNumber,roomNo,description,complainStatus);
+                    final Complaint complaint =new Complaint(complaintUserId,complaintUserName,pcNumber,roomNo,description,complainStatus,date);
 
                     FirebaseDatabase.getInstance().getReference("complaints")
                             .push().setValue(complaint).addOnCompleteListener(new OnCompleteListener<Void>() {
