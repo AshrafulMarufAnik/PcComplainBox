@@ -23,7 +23,7 @@ public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
         // If you want to send messages to this application instance or
         // manage this apps subscriptions on the server side, send the
         // Instance ID token to your app server.
-        sendRegistrationToServer(refreshedToken);
+       // sendRegistrationToServer(refreshedToken);
     }
 
 
@@ -35,10 +35,10 @@ public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
      *
      * @param token The new token.
      */
-   private void sendRegistrationToServer(String token) {
+ /*  private void sendRegistrationToServer(String token) {
         Log.d(TAG, "sendRegistrationToServer: sending token to server: " + token);
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("user_token");
         reference.setValue(token);
-    }
+    }*/
 
 }
