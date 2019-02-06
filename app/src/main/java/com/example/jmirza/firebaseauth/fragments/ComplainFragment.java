@@ -68,7 +68,7 @@ public class ComplainFragment extends Fragment implements View.OnClickListener {
     public void onResume() {
         super.onResume();
         // we typecasted getActivity for getting profile's actionBar....
-        ((ProfileActivity) getActivity()).setActionBarTitle("Make a Complaints...");
+        ((ProfileActivity) getActivity()).setActionBarTitle("Make a Complaint...");
     }
 
 

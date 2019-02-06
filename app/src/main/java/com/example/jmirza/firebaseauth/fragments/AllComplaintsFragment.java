@@ -43,7 +43,6 @@ public class AllComplaintsFragment extends Fragment {
     public List<Complaint> allComplaintList;
     public FirebaseAuth uAuth;
     public DatabaseReference myRef;
-    String uId;
     FirebaseUser user;
     public Complaint allComplaints;
 
@@ -63,7 +62,7 @@ public class AllComplaintsFragment extends Fragment {
 
         uAuth = FirebaseAuth.getInstance();
         user = uAuth.getCurrentUser();
-        myRef = FirebaseDatabase.getInstance().getReference();
+        myRef = FirebaseDatabase.getInstance().getReference("complaints");
         // setting up custom toolbar or actionbar
         toolbar = view.findViewById(R.id.toolbarID);
         toolbarTitle = view.findViewById(R.id.toolbar_title);
@@ -83,21 +82,17 @@ public class AllComplaintsFragment extends Fragment {
     }
 
     private void allComplaints() {
-        uId = user.getUid();
-        myRef = FirebaseDatabase.getInstance().getReference("complaint");
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 allComplaintList.clear();
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                     // TODO: handle the post
-                    for (DataSnapshot snapshot : postSnapshot.getChildren()) {
-                        allComplaints = snapshot.getValue(Complaint.class);
-                        allComplaintList.add(allComplaints);
-                    }
-                    complainAdapter = new ComplainAdapter(getContext(), allComplaintList);
-                    recyclerView.setAdapter(complainAdapter);
+                    allComplaints = postSnapshot.getValue(Complaint.class);
+                    allComplaintList.add(allComplaints);
                 }
+                complainAdapter = new ComplainAdapter(getContext(), allComplaintList);
+                recyclerView.setAdapter(complainAdapter);
 
             }
 

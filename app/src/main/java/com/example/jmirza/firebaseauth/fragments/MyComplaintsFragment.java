@@ -59,7 +59,7 @@ public class MyComplaintsFragment extends Fragment {
 
         uAuth = FirebaseAuth.getInstance();
         user = uAuth.getCurrentUser();
-        myRef = FirebaseDatabase.getInstance().getReference();
+        myRef = FirebaseDatabase.getInstance().getReference("complaints");
         toolbar = view.findViewById(R.id.toolbarID);
         toolbarTitle = view.findViewById(R.id.toolbar_title);
         myComplaintList = new ArrayList<>();
@@ -79,15 +79,18 @@ public class MyComplaintsFragment extends Fragment {
 
     private void myComplaints() {
         uId = user.getUid();
-        myRef = FirebaseDatabase.getInstance().getReference("complaint").child(uId);
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 myComplaintList.clear();
+
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                    // TODO: handle the post
                     userComplaints = postSnapshot.getValue(Complaint.class);
-                    myComplaintList.add(userComplaints);
+                    final String userID = userComplaints.complainUserId;
+
+                    if (userID.equals(uId)) {
+                        myComplaintList.add(userComplaints);
+                    }
                 }
                 complainAdapter = new ComplainAdapter(getContext(), myComplaintList);
                 recyclerView.setAdapter(complainAdapter);
@@ -114,3 +117,4 @@ public class MyComplaintsFragment extends Fragment {
     }
 
 }
+

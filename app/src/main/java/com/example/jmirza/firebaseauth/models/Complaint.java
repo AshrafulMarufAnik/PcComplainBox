@@ -13,11 +13,6 @@ public class Complaint {
 
     }
 
-    public Complaint(String pcNumber, String roomNo, String description) {
-        this.pcNumber = pcNumber;
-        this.roomNo = roomNo;
-        this.description = description;
-    }
     public Complaint(String complainUserId,String complainUserName,String pcNumber,String roomNo,String description,String complainStatus,String complainDate) {
         this.complainUserId = complainUserId;
         this.complainUserName = complainUserName;
