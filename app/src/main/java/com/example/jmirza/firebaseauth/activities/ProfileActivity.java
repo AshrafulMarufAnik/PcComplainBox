@@ -25,6 +25,7 @@ import com.example.jmirza.firebaseauth.fragments.MyComplaintsFragment;
 import com.example.jmirza.firebaseauth.fragments.ProfileFragment;
 import com.example.jmirza.firebaseauth.fragments.SolvedComplaintsFragment;
 import com.example.jmirza.firebaseauth.fragments.PendingComplaintsFragment;
+import com.example.jmirza.firebaseauth.models.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -32,8 +33,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
-import java.util.Objects;
 
 
 public class ProfileActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, android.support.v7.widget.SearchView.OnQueryTextListener {
@@ -46,6 +45,7 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
     private DatabaseReference myRef;
     String uId;
     FirebaseUser user;
+    private User UserInfo;
     android.support.v7.widget.SearchView searchView;
 
 
@@ -96,28 +96,30 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
         navigationView = findViewById(R.id.nav_view);
 
         uId = user.getUid();
-        myRef = FirebaseDatabase.getInstance().getReference();
+        myRef = FirebaseDatabase.getInstance().getReference("users").child(uId);
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                     UserInfo = dataSnapshot.getValue(User.class);
+                     if (UserInfo!=null) {
+                         final String userType = UserInfo.occupation;
+                         final String userName = UserInfo.name;
 
-                if (Objects.equals(dataSnapshot.child("student").child(uId).child("occupation").getValue(), "Student")) {
-                    String userName = dataSnapshot.child("student").child(uId).child("name").getValue().toString();
-                    navigationView.getMenu().clear();
-                    navigationView.inflateMenu(R.menu.drawer_menu_student);
-                    View header = navigationView.getHeaderView(0);
-                    TextView uName = header.findViewById(R.id.nav_header_user_name);
-                    uName.setText(userName);
+                         if (userType.equals("Student")) {
+                             navigationView.getMenu().clear();
+                             navigationView.inflateMenu(R.menu.drawer_menu_student);
+                             View header = navigationView.getHeaderView(0);
+                             TextView uName = header.findViewById(R.id.nav_header_user_name);
+                             uName.setText(userName);
+                         }else if (userType.equals("Personnel")) {
+                             navigationView.getMenu().clear();
+                             navigationView.inflateMenu(R.menu.drawer_menu_personnel);
+                             View header = navigationView.getHeaderView(0);
+                             TextView uName = header.findViewById(R.id.nav_header_user_name);
+                             uName.setText(userName);
+                         }
 
-                } else if (Objects.equals(dataSnapshot.child("personnel").child(uId).child("occupation").getValue(), "Personnel")) {
-                    String userName = dataSnapshot.child("personnel").child(uId).child("name").getValue().toString();
-                    navigationView.getMenu().clear();
-                    navigationView.inflateMenu(R.menu.drawer_menu_personnel);
-                    View header = navigationView.getHeaderView(0);
-                    TextView uName = header.findViewById(R.id.nav_header_user_name);
-                    uName.setText(userName);
-
-                }
+                     }
             }
 
             @Override
@@ -224,4 +226,3 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
         toolbarTitle.setText(title);
     }
 }
-
