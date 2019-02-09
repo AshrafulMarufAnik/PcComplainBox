@@ -10,10 +10,12 @@ import android.text.TextUtils;
 import android.util.Patterns;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,7 +39,10 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     Button registerButton;
     TextView loginTextView;
     RadioGroup radioGroup;
-    String userType;
+    private String[] deptNames;
+    private Spinner spinner;
+    private String userType;
+    private String dept;
     private FirebaseAuth uAuth;
     private static final String TAG = "RegisterActivity";
 
@@ -54,12 +59,16 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     public void initialization() {
         radioGroup = findViewById(R.id.userTypeRgId);
         nameEt = findViewById(R.id.nameEtId);
-        genderEt = findViewById(R.id.genderEtId);
+        // genderEt = findViewById(R.id.genderEtId);
         phoneEt = findViewById(R.id.phoneEtId);
         emailEt = findViewById(R.id.emailEtId);
         passEt = findViewById(R.id.passwordEtId);
         registerButton = findViewById(R.id.registerBtnId);
         loginTextView = findViewById(R.id.signInTvId);
+        deptNames = getResources().getStringArray(R.array.deptType);
+        spinner = findViewById(R.id.spinnerID);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.spinner_view, R.id.spinnerTv, deptNames);
+        spinner.setAdapter(adapter);
         String text = "Already have an account? <font color='red'>Login</font>";
         loginTextView.setText(Html.fromHtml(text), TextView.BufferType.SPANNABLE);
         progressBar = findViewById(R.id.progressBarID);
@@ -102,33 +111,35 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     public void registerUser() {
 
         final String name = nameEt.getText().toString().trim();
-        final String gender = genderEt.getText().toString().trim();
+       // final String gender = genderEt.getText().toString().trim();
         final String phone = phoneEt.getText().toString().trim();
         final String email = emailEt.getText().toString().trim();
         final String pass = passEt.getText().toString().trim();
         if (checkValidity()) {
             //toast
-
         } else {
             if (radioGroup.getCheckedRadioButtonId() == -1) {
                 // no radio buttons are checked
-                Toast.makeText(SignUpActivity.this, "Select a type to register", Toast.LENGTH_LONG).show();
+                Toast.makeText(SignUpActivity.this, "Select a user type to register", Toast.LENGTH_LONG).show();
             } else {
                 // one of the radio buttons is checked
                 int id = radioGroup.getCheckedRadioButtonId();
                 RadioButton radioButton = findViewById(id);
-                this.userType = (String) radioButton.getText();
+                String str = radioButton.getText().toString();
+                int len = str.length();
+                String strNew = str.substring(3,len);
+                this.userType = strNew.trim();
+                this.dept = spinner.getSelectedItem().toString();
 
                 if (id == R.id.studentRbId) {
                     progressBar.setVisibility(View.VISIBLE);
-                    final String occupation = "Student";
                     uAuth.createUserWithEmailAndPassword(email, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
                                 String deviceToken = FirebaseInstanceId.getInstance().getToken();
                                 String userId = uAuth.getCurrentUser().getUid();
-                                Student student = new Student(userId,name, gender, phone, email, pass, occupation, deviceToken);
+                                Student student = new Student(userId, name, dept, phone, email, pass, userType, deviceToken);
                                 FirebaseDatabase.getInstance().getReference("users")
                                         .child(uAuth.getCurrentUser().getUid()).setValue(student)
                                         .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -173,7 +184,6 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                 } else if (id == R.id.personnelRbId) {
                     // personnel reg
                     progressBar.setVisibility(View.VISIBLE);
-                    final String occupation = "Personnel";
 
                     uAuth.createUserWithEmailAndPassword(email, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
@@ -182,7 +192,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
                                 String deviceToken = FirebaseInstanceId.getInstance().getToken();
                                 String userId = uAuth.getCurrentUser().getUid();
-                                Personnel personnel = new Personnel(userId, name, gender, phone, email, pass, occupation, deviceToken);
+                                Personnel personnel = new Personnel(userId, name, dept, phone, email, pass, userType, deviceToken);
                                 FirebaseDatabase.getInstance().getReference("users")
                                         .child(uAuth.getCurrentUser().getUid()).setValue(personnel)
                                         .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -224,6 +234,59 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
                         }
                     });
+                } else if (id == R.id.adminRbId) {
+                    // admin reg
+                    progressBar.setVisibility(View.VISIBLE);
+
+                    uAuth.createUserWithEmailAndPassword(email, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+
+                                String deviceToken = FirebaseInstanceId.getInstance().getToken();
+                                String userId = uAuth.getCurrentUser().getUid();
+                                Personnel personnel = new Personnel(userId, name, dept, phone, email, pass, userType, deviceToken);
+                                FirebaseDatabase.getInstance().getReference("users")
+                                        .child(uAuth.getCurrentUser().getUid()).setValue(personnel)
+                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                progressBar.setVisibility(View.GONE);
+
+                                                if (task.isSuccessful()) {
+                                                    uAuth.getCurrentUser().sendEmailVerification()
+                                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                @Override
+                                                                public void onComplete(@NonNull Task<Void> task) {
+                                                                    if (task.isSuccessful()) {
+                                                                        Toast.makeText(getApplicationContext(), "Admin registered succesfully!..Check your email for verification..", Toast.LENGTH_LONG).show();
+                                                                        finish();
+                                                                        Intent intent = new Intent(SignUpActivity.this, LoginActivity.class);
+                                                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                                                        startActivity(intent);
+                                                                    }
+                                                                }
+                                                            });
+
+                                                } else {
+                                                    Toast.makeText(getApplicationContext(), "Admin registration failed! try again.." + task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                                                }
+
+                                            }
+                                        });
+
+                            } else if (task.getException() instanceof FirebaseAuthUserCollisionException) {
+                                Toast.makeText(getApplicationContext(), "You are already registered", Toast.LENGTH_LONG).show();
+                            }
+
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(getApplicationContext(), "" + e.getMessage(), Toast.LENGTH_LONG).show();
+
+                        }
+                    });
 
 
                 }
@@ -242,7 +305,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         boolean cancel = false;
 
         String name = nameEt.getText().toString().trim();
-        String gender = genderEt.getText().toString().trim();
+    //    String gender = genderEt.getText().toString().trim();
         String phone = phoneEt.getText().toString().trim();
         String email = emailEt.getText().toString().trim();
         String password = passEt.getText().toString().trim();
@@ -252,10 +315,6 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
             cancel = true;
             nameEt.setError("Enter a name");
             nameEt.requestFocus();
-        } else if (TextUtils.isEmpty(gender)) {
-            cancel = true;
-            genderEt.setError("Enter a gender");
-            genderEt.requestFocus();
         } else if (TextUtils.isEmpty(phone)) {
             cancel = true;
             phoneEt.setError("Enter a phone");

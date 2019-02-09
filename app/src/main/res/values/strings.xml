@@ -33,6 +33,15 @@
     <string name="user">User :</string>
 
     <string name="search">Search all by Room no..</string>
+    <string name="as_admin">As Admin</string>
+
+    // spinner collection
+
+    <string-array name="deptType">
+        <item>CSE</item>
+        <item>EEE</item>
+        <item>BBA</item>
+    </string-array>
 
 
 </resources>
