@@ -101,7 +101,7 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                      UserInfo = dataSnapshot.getValue(User.class);
-                     if (UserInfo!=null) {
+                     if (UserInfo!= null) {
                          final String userType = UserInfo.occupation;
                          final String userName = UserInfo.name;
 

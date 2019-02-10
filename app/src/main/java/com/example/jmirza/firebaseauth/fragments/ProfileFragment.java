@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.example.jmirza.firebaseauth.R;
 import com.example.jmirza.firebaseauth.activities.ProfileActivity;
 import com.example.jmirza.firebaseauth.activities.UpdateProfileActivity;
+import com.example.jmirza.firebaseauth.models.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -37,11 +38,12 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     private Button editBt;
     private FirebaseAuth uAuth;
     private DatabaseReference myRef;
-    public View view;
-    String uId;
-    FirebaseUser user;
-    Toolbar toolbar;
-    TextView toolbarTitle;
+    private View view;
+    private String uId;
+    private FirebaseUser user;
+    private Toolbar toolbar;
+    private TextView toolbarTitle;
+    private User UserInfo;
 
 
     @Nullable
@@ -75,35 +77,22 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
     private void addingProfileDetails() {
 
         uId = user.getUid();
-        myRef = FirebaseDatabase.getInstance().getReference();
+        myRef = FirebaseDatabase.getInstance().getReference("users").child(uId);
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                if (Objects.equals(dataSnapshot.child("student").child(uId).child("occupation").getValue(), "Student")) {
-
-                    String name = (String) dataSnapshot.child("student").child(uId).child("name").getValue();
-                    String password = (String) dataSnapshot.child("student").child(uId).child("password").getValue();
-                    String email = (String) dataSnapshot.child("student").child(uId).child("email").getValue();
-                    String phone = (String) dataSnapshot.child("student").child(uId).child("phone").getValue();
-                    profileName.setText(name);
-                    profilePassword.setText(password);
-                    profileEmail.setText(email);
-                    profilePhone.setText(phone);
-
-
-                } else if (Objects.equals(dataSnapshot.child("personnel").child(uId).child("occupation").getValue(), "Personnel")) {
-
-
-                    String name = (String) dataSnapshot.child("personnel").child(uId).child("name").getValue();
-                    String password = (String) dataSnapshot.child("personnel").child(uId).child("password").getValue();
-                    String email = (String) dataSnapshot.child("personnel").child(uId).child("email").getValue();
-                    String phone = (String) dataSnapshot.child("personnel").child(uId).child("phone").getValue();
+                UserInfo = dataSnapshot.getValue(User.class);
+                if (UserInfo != null) {
+                    String name = UserInfo.name;
+                    String password = UserInfo.password;
+                    String email = UserInfo.email;
+                    String phone = UserInfo.phone;
                     profileName.setText(name);
                     profilePassword.setText(password);
                     profileEmail.setText(email);
                     profilePhone.setText(phone);
                 }
+
             }
 
             @Override
@@ -111,7 +100,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
 
             }
         });
-
 
     }
 

@@ -31,12 +31,12 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.iid.FirebaseInstanceId;
 
 public class SignUpActivity extends AppCompatActivity implements View.OnClickListener {
-    TextInputEditText nameEt, phoneEt, emailEt, passEt;
-    TextView verifiedEmailEt;
-    ProgressBar progressBar;
-    Button registerButton;
-    TextView loginTextView;
-    RadioGroup radioGroup;
+    private TextInputEditText nameEt, phoneEt, emailEt, passEt;
+    private TextView verifiedEmailEt;
+    private ProgressBar progressBar;
+    private Button registerButton;
+    private TextView loginTextView;
+    private RadioGroup radioGroup;
     private String[] deptNames;
     private Spinner spinner;
     private String userType;
