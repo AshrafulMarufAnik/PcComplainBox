@@ -117,6 +117,12 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
                              View header = navigationView.getHeaderView(0);
                              TextView uName = header.findViewById(R.id.nav_header_user_name);
                              uName.setText(userName);
+                         } else if (userType.equals("Admin")) {
+                             navigationView.getMenu().clear();
+                             navigationView.inflateMenu(R.menu.drawer_menu_admin);
+                             View header = navigationView.getHeaderView(0);
+                             TextView uName = header.findViewById(R.id.nav_header_user_name);
+                             uName.setText(userName);
                          }
 
                      }

@@ -20,20 +20,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.jmirza.firebaseauth.R;
-import com.example.jmirza.firebaseauth.models.Personnel;
-import com.example.jmirza.firebaseauth.models.Student;
+import com.example.jmirza.firebaseauth.models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.iid.FirebaseInstanceId;
 
 public class SignUpActivity extends AppCompatActivity implements View.OnClickListener {
-    TextInputEditText nameEt, genderEt, phoneEt, emailEt, passEt;
+    TextInputEditText nameEt, phoneEt, emailEt, passEt;
     TextView verifiedEmailEt;
     ProgressBar progressBar;
     Button registerButton;
@@ -43,6 +41,8 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     private Spinner spinner;
     private String userType;
     private String dept;
+    private static String STATUS = "Active";
+    private static String APPROVAL = "NO";
     private FirebaseAuth uAuth;
     private static final String TAG = "RegisterActivity";
 
@@ -59,7 +59,6 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     public void initialization() {
         radioGroup = findViewById(R.id.userTypeRgId);
         nameEt = findViewById(R.id.nameEtId);
-        // genderEt = findViewById(R.id.genderEtId);
         phoneEt = findViewById(R.id.phoneEtId);
         emailEt = findViewById(R.id.emailEtId);
         passEt = findViewById(R.id.passwordEtId);
@@ -111,7 +110,6 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     public void registerUser() {
 
         final String name = nameEt.getText().toString().trim();
-       // final String gender = genderEt.getText().toString().trim();
         final String phone = phoneEt.getText().toString().trim();
         final String email = emailEt.getText().toString().trim();
         final String pass = passEt.getText().toString().trim();
@@ -127,7 +125,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                 RadioButton radioButton = findViewById(id);
                 String str = radioButton.getText().toString();
                 int len = str.length();
-                String strNew = str.substring(3,len);
+                String strNew = str.substring(3, len);
                 this.userType = strNew.trim();
                 this.dept = spinner.getSelectedItem().toString();
 
@@ -139,7 +137,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                             if (task.isSuccessful()) {
                                 String deviceToken = FirebaseInstanceId.getInstance().getToken();
                                 String userId = uAuth.getCurrentUser().getUid();
-                                Student student = new Student(userId, name, dept, phone, email, pass, userType, deviceToken);
+                                User student = new User(userId, name, dept, phone, email, pass, userType, deviceToken, STATUS, APPROVAL);
                                 FirebaseDatabase.getInstance().getReference("users")
                                         .child(uAuth.getCurrentUser().getUid()).setValue(student)
                                         .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -192,7 +190,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
                                 String deviceToken = FirebaseInstanceId.getInstance().getToken();
                                 String userId = uAuth.getCurrentUser().getUid();
-                                Personnel personnel = new Personnel(userId, name, dept, phone, email, pass, userType, deviceToken);
+                                User personnel = new User(userId, name, dept, phone, email, pass, userType, deviceToken, STATUS, APPROVAL);
                                 FirebaseDatabase.getInstance().getReference("users")
                                         .child(uAuth.getCurrentUser().getUid()).setValue(personnel)
                                         .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -245,7 +243,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
 
                                 String deviceToken = FirebaseInstanceId.getInstance().getToken();
                                 String userId = uAuth.getCurrentUser().getUid();
-                                Personnel personnel = new Personnel(userId, name, dept, phone, email, pass, userType, deviceToken);
+                                User personnel = new User(userId, name, dept, phone, email, pass, userType, deviceToken, STATUS, APPROVAL);
                                 FirebaseDatabase.getInstance().getReference("users")
                                         .child(uAuth.getCurrentUser().getUid()).setValue(personnel)
                                         .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -305,7 +303,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         boolean cancel = false;
 
         String name = nameEt.getText().toString().trim();
-    //    String gender = genderEt.getText().toString().trim();
+        //    String gender = genderEt.getText().toString().trim();
         String phone = phoneEt.getText().toString().trim();
         String email = emailEt.getText().toString().trim();
         String password = passEt.getText().toString().trim();

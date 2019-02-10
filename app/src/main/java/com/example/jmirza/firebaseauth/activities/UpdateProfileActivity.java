@@ -13,11 +13,7 @@ import android.widget.Toast;
 
 import com.example.jmirza.firebaseauth.R;
 
-import com.example.jmirza.firebaseauth.models.Personnel;
-import com.example.jmirza.firebaseauth.models.Student;
-import com.example.jmirza.firebaseauth.models.UserPersonnel;
-import com.example.jmirza.firebaseauth.models.UserStudent;
-
+import com.example.jmirza.firebaseauth.models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -33,15 +29,14 @@ import java.util.Objects;
 
 public class UpdateProfileActivity extends AppCompatActivity implements View.OnClickListener {
 
-    UserStudent userStudent;
-    UserPersonnel userPersonnel;
+   private User userStudent,userPersonnel;
 
-    TextView nameEt,phoneEt,passwordEt;
-    Button updateBt;
-    FirebaseAuth uAuth;
-    private DatabaseReference myRef;
-    FirebaseUser user;
-    String uId;
+   private TextView nameEt,phoneEt,passwordEt;
+   private Button updateBt;
+   private FirebaseAuth uAuth;
+   private DatabaseReference myRef;
+   private FirebaseUser user;
+   private String uId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,7 +71,7 @@ public class UpdateProfileActivity extends AppCompatActivity implements View.OnC
 
                     if(Objects.equals(dataSnapshot.child("student").child(uId).child("occupation").getValue(), "Student")){
 
-                        userStudent =dataSnapshot.child("student").child(uId).getValue(UserStudent.class);
+                        userStudent =dataSnapshot.child("student").child(uId).getValue(User.class);
                         nameEt.setText(userStudent.name);
                         phoneEt.setText(userStudent.phone);
                         passwordEt.setText(userStudent.password);
@@ -85,7 +80,7 @@ public class UpdateProfileActivity extends AppCompatActivity implements View.OnC
                     } else if (Objects.equals(dataSnapshot.child("personnel").child(uId).child("occupation").getValue(), "Personnel")) {
 
 
-                        userPersonnel =dataSnapshot.child("personnel").child(uId).getValue(UserPersonnel.class);
+                        userPersonnel =dataSnapshot.child("personnel").child(uId).getValue(User.class);
                         nameEt.setText(userPersonnel.name);
                         phoneEt.setText(userPersonnel.phone);
                         passwordEt.setText(userPersonnel.password);
@@ -131,9 +126,9 @@ public class UpdateProfileActivity extends AppCompatActivity implements View.OnC
 
                     if(Objects.equals(dataSnapshot.child("student").child(uId).child("occupation").getValue(), "Student")){
 
-                        userStudent =dataSnapshot.child("student").child(uId).getValue(UserStudent.class);
+                        userStudent =dataSnapshot.child("student").child(uId).getValue(User.class);
 
-                        Student student = new Student(uId,name,userStudent.gender,phone,userStudent.email,pass,userStudent.occupation,userStudent.messagingToken);
+                        User student = new User(name,userStudent.department,phone,userStudent.email,pass,userStudent.occupation);
                         FirebaseDatabase.getInstance().getReference("student")
                                 .child(uAuth.getCurrentUser().getUid()).setValue(student).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
@@ -149,8 +144,8 @@ public class UpdateProfileActivity extends AppCompatActivity implements View.OnC
 
                     } else if (Objects.equals(dataSnapshot.child("personnel").child(uId).child("occupation").getValue(), "Personnel")) {
 
-                        userPersonnel =dataSnapshot.child("personnel").child(uId).getValue(UserPersonnel.class);
-                        Personnel personnel = new Personnel(uId,name,userPersonnel.gender,phone,userPersonnel.email,pass,userPersonnel.occupation,userPersonnel.messagingToken);
+                        userPersonnel =dataSnapshot.child("personnel").child(uId).getValue(User.class);
+                        User personnel = new User(name,userPersonnel.department,phone,userPersonnel.email,pass,userPersonnel.occupation);
                         FirebaseDatabase.getInstance().getReference("personnel")
                                 .child(uAuth.getCurrentUser().getUid()).setValue(personnel).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
