@@ -92,7 +92,6 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
                     profileEmail.setText(email);
                     profilePhone.setText(phone);
                 }
-
             }
 
             @Override

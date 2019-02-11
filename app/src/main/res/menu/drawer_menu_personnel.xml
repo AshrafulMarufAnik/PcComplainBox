@@ -10,6 +10,14 @@
             android:icon="@drawable/ic_person_black_24dp"
             android:title="Profile" />
         <item
+            android:id="@+id/nv_my_complain"
+            android:icon="@drawable/ic_content_paste_black_24dp"
+            android:title="My Complaints" />
+        <item
+            android:id="@+id/nv_my_dept_complaint"
+            android:icon="@drawable/ic_department_black_24dp"
+            android:title="My Department Complaints" />
+        <item
             android:id="@+id/nv_solved_complaint"
             android:icon="@drawable/ic_done_all_black_24dp"
             android:title="Solved Complaints" />

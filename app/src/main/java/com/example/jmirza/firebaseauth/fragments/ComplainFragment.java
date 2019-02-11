@@ -109,7 +109,6 @@ public class ComplainFragment extends Fragment implements View.OnClickListener {
                     String date = mdformat.format(calendar.getTime());
 
                     String complaintUserName = (String) dataSnapshot.child("name").getValue();
-
                     final Complaint complaint =new Complaint(complaintUserId,complaintUserName,pcNumber,roomNo,description,complainStatus,date);
 
                     FirebaseDatabase.getInstance().getReference("complaints")
@@ -157,7 +156,7 @@ public class ComplainFragment extends Fragment implements View.OnClickListener {
             roomNumberEt.requestFocus();
         } else if (TextUtils.isEmpty(description)) {
             cancel = true;
-            descriptionEt.setError("Enter a valid email!!!");
+            descriptionEt.setError("Enter a description!!!");
             descriptionEt.requestFocus();
         }
         return cancel;

@@ -21,7 +21,9 @@ import android.widget.Toast;
 import com.example.jmirza.firebaseauth.R;
 import com.example.jmirza.firebaseauth.fragments.AllComplaintsFragment;
 import com.example.jmirza.firebaseauth.fragments.ComplainFragment;
+import com.example.jmirza.firebaseauth.fragments.ManageUserFragment;
 import com.example.jmirza.firebaseauth.fragments.MyComplaintsFragment;
+import com.example.jmirza.firebaseauth.fragments.MyDeptComplaintsFragment;
 import com.example.jmirza.firebaseauth.fragments.ProfileFragment;
 import com.example.jmirza.firebaseauth.fragments.SolvedComplaintsFragment;
 import com.example.jmirza.firebaseauth.fragments.PendingComplaintsFragment;
@@ -37,16 +39,16 @@ import com.google.firebase.database.ValueEventListener;
 
 public class ProfileActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, android.support.v7.widget.SearchView.OnQueryTextListener {
 
-    DrawerLayout drawer;
-    Toolbar toolbar;
-    TextView toolbarTitle;
-    NavigationView navigationView;
+    private DrawerLayout drawer;
+    private Toolbar toolbar;
+    private TextView toolbarTitle;
+    private NavigationView navigationView;
     private FirebaseAuth uAuth;
     private DatabaseReference myRef;
-    String uId;
-    FirebaseUser user;
+    private String uId;
+    private FirebaseUser user;
     private User UserInfo;
-    android.support.v7.widget.SearchView searchView;
+    private android.support.v7.widget.SearchView searchView;
 
 
     @Override
@@ -100,32 +102,38 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                     UserInfo = dataSnapshot.getValue(User.class);
-                     if (UserInfo!= null) {
-                         final String userType = UserInfo.occupation;
-                         final String userName = UserInfo.name;
+                UserInfo = dataSnapshot.getValue(User.class);
+                if (UserInfo != null) {
+                    final String userType = UserInfo.occupation;
+                    final String userName = UserInfo.name;
 
-                         if (userType.equals("Student")) {
-                             navigationView.getMenu().clear();
-                             navigationView.inflateMenu(R.menu.drawer_menu_student);
-                             View header = navigationView.getHeaderView(0);
-                             TextView uName = header.findViewById(R.id.nav_header_user_name);
-                             uName.setText(userName);
-                         }else if (userType.equals("Personnel")) {
-                             navigationView.getMenu().clear();
-                             navigationView.inflateMenu(R.menu.drawer_menu_personnel);
-                             View header = navigationView.getHeaderView(0);
-                             TextView uName = header.findViewById(R.id.nav_header_user_name);
-                             uName.setText(userName);
-                         } else if (userType.equals("Admin")) {
-                             navigationView.getMenu().clear();
-                             navigationView.inflateMenu(R.menu.drawer_menu_admin);
-                             View header = navigationView.getHeaderView(0);
-                             TextView uName = header.findViewById(R.id.nav_header_user_name);
-                             uName.setText(userName);
-                         }
+                    if (userType.equals("Student")) {
+                        navigationView.getMenu().clear();
+                        navigationView.inflateMenu(R.menu.drawer_menu_student);
+                        View header = navigationView.getHeaderView(0);
+                        TextView uName = header.findViewById(R.id.nav_header_user_name);
+                        TextView uType = header.findViewById(R.id.nav_header_user_type);
+                        uName.setText(userName);
+                        uType.setText(userType);
+                    } else if (userType.equals("Personnel")) {
+                        navigationView.getMenu().clear();
+                        navigationView.inflateMenu(R.menu.drawer_menu_personnel);
+                        View header = navigationView.getHeaderView(0);
+                        TextView uName = header.findViewById(R.id.nav_header_user_name);
+                        TextView uType = header.findViewById(R.id.nav_header_user_type);
+                        uName.setText(userName);
+                        uType.setText(userType);
+                    } else if (userType.equals("Admin")) {
+                        navigationView.getMenu().clear();
+                        navigationView.inflateMenu(R.menu.drawer_menu_admin);
+                        View header = navigationView.getHeaderView(0);
+                        TextView uName = header.findViewById(R.id.nav_header_user_name);
+                        TextView uType = header.findViewById(R.id.nav_header_user_type);
+                        uName.setText(userName);
+                        uType.setText(userType);
+                    }
 
-                     }
+                }
             }
 
             @Override
@@ -177,6 +185,14 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
             case R.id.nv_unsolved_complaint:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new PendingComplaintsFragment()).commit();
+                break;
+            case R.id.nv_manage_user:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new ManageUserFragment()).commit();
+                break;
+            case R.id.nv_my_dept_complaint:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                        new MyDeptComplaintsFragment()).commit();
                 break;
             case R.id.nv_share:
                 Toast.makeText(this, "Share is selected", Toast.LENGTH_LONG).show();

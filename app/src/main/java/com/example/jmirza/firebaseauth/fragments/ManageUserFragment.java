@@ -27,7 +27,8 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PendingComplaintsFragment extends Fragment {
+public class ManageUserFragment extends Fragment {
+
     private View view;
     private Toolbar toolbar;
     private TextView toolbarTitle;
@@ -40,11 +41,12 @@ public class PendingComplaintsFragment extends Fragment {
     private FirebaseUser user;
     private Complaint pendingComplaints;
 
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        view = inflater.inflate(R.layout.fragment_complaints_unsolved, container, false);
+        view = inflater.inflate(R.layout.fragment_user_manage, container, false);
         initialization();
         onClick();
 
@@ -54,7 +56,7 @@ public class PendingComplaintsFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        ((ProfileActivity) getActivity()).setActionBarTitle("Pending Complaints...");
+        ((ProfileActivity) getActivity()).setActionBarTitle("Manage user...");
     }
 
 
@@ -69,42 +71,13 @@ public class PendingComplaintsFragment extends Fragment {
         // setting up custom toolbar or actionbar
         toolbar = view.findViewById(R.id.toolbarID);
         toolbarTitle = view.findViewById(R.id.toolbar_title);
-        recyclerView = view.findViewById(R.id.pending_complaints_recycleView);
-        // recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        pendingComplaintList = new ArrayList<>();
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        pendingComplaints();
     }
 
-    private void pendingComplaints() {
-        uId = user.getUid();
-        myRef = FirebaseDatabase.getInstance().getReference("complaints");
-        myRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                pendingComplaintList.clear();
-                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                    // TODO: handle the post
-                    for (DataSnapshot snapshot : postSnapshot.getChildren()) {
-                        pendingComplaints = snapshot.getValue(Complaint.class);
-                        pendingComplaintList.add(pendingComplaints);
-                    }
-                    complainAdapter = new ComplainAdapter(getContext(), pendingComplaintList);
-                    recyclerView.setAdapter(complainAdapter);
-                }
 
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-
-    }
 }
+

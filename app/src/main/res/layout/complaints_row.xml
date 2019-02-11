@@ -19,8 +19,7 @@
             android:id="@+id/complaintsImageView"
             android:layout_width="match_parent"
             android:background="@drawable/complaintcardview"
-            android:layout_height="140dp"
-
+            android:layout_height="100dp"
             android:scaleType="centerCrop" />
     <LinearLayout
         android:layout_width="match_parent"
