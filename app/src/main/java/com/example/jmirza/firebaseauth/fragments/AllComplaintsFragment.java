@@ -29,16 +29,16 @@ import java.util.List;
 
 public class AllComplaintsFragment extends Fragment {
 
-    public View view;
-    Toolbar toolbar;
-    TextView toolbarTitle;
+    private View view;
+    private Toolbar toolbar;
+    private TextView toolbarTitle;
     private RecyclerView recyclerView;
-    public ComplainAdapter complainAdapter;
-    public List<Complaint> allComplaintList;
-    public FirebaseAuth uAuth;
-    public DatabaseReference myRef;
-    FirebaseUser user;
-    public Complaint allComplaints;
+    private ComplainAdapter complainAdapter;
+    private List<Complaint> allComplaintList;
+    private FirebaseAuth uAuth;
+    private DatabaseReference myRef;
+    private FirebaseUser user;
+    private Complaint allComplaints;
 
 
     @Nullable

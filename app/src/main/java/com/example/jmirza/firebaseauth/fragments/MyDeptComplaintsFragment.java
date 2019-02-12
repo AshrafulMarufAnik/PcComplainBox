@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -15,26 +16,32 @@ import com.example.jmirza.firebaseauth.R;
 import com.example.jmirza.firebaseauth.activities.ProfileActivity;
 import com.example.jmirza.firebaseauth.adapters.ComplainAdapter;
 import com.example.jmirza.firebaseauth.models.Complaint;
+import com.example.jmirza.firebaseauth.models.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MyDeptComplaintsFragment extends Fragment {
 
     private View view;
-    private Toolbar toolbar;
-    private TextView toolbarTitle;
     private RecyclerView recyclerView;
     private ComplainAdapter complainAdapter;
-    private List<Complaint> pendingComplaintList;
+    private List<Complaint> myComplaintList;
     private FirebaseAuth uAuth;
-    private DatabaseReference myRef;
+    private DatabaseReference myComRef, myUserRef;
     private String uId;
     private FirebaseUser user;
-    private Complaint pendingComplaints;
+    private Complaint userComplaints;
+    private User users;
+    private Toolbar toolbar;
+    private TextView toolbarTitle;
 
     @Nullable
     @Override
@@ -49,7 +56,7 @@ public class MyDeptComplaintsFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        ((ProfileActivity) getActivity()).setActionBarTitle("My department complaints...");
+        ((ProfileActivity) getActivity()).setActionBarTitle("My dept. complaints...");
     }
 
 
@@ -60,14 +67,62 @@ public class MyDeptComplaintsFragment extends Fragment {
 
         uAuth = FirebaseAuth.getInstance();
         user = uAuth.getCurrentUser();
-        myRef = FirebaseDatabase.getInstance().getReference();
-        // setting up custom toolbar or actionbar
+        myComRef = FirebaseDatabase.getInstance().getReference("complaints");
+        myUserRef = FirebaseDatabase.getInstance().getReference();
         toolbar = view.findViewById(R.id.toolbarID);
         toolbarTitle = view.findViewById(R.id.toolbar_title);
+        myComplaintList = new ArrayList<>();
+        recyclerView = view.findViewById(R.id.recycleView);
+        // recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
     }
 
     @Override
     public void onStart() {
         super.onStart();
+        myDeptComplaints();
     }
+
+    private void myDeptComplaints() {
+        this.uId = user.getUid();
+        myComRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                myComplaintList.clear();
+
+                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
+                    userComplaints = postSnapshot.getValue(Complaint.class);
+                    final String userDept = userComplaints.complainUserDept;
+                    myUserRef = FirebaseDatabase.getInstance().getReference("users").child(uId);
+                    myUserRef.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            users = dataSnapshot.getValue(User.class);
+                            if (users != null) {
+                                final String currentUserDept = users.department;
+                                if (currentUserDept.equals(userDept)) {
+                                    myComplaintList.add(userComplaints);
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+                }
+                complainAdapter = new ComplainAdapter(getContext(), myComplaintList);
+                recyclerView.setAdapter(complainAdapter);
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+
 }

@@ -4,14 +4,12 @@
     android:layout_height="match_parent"
     android:layout_gravity="center"
     android:gravity="center"
+    android:background="@drawable/bluepink_3"
     android:orientation="vertical">
 
-    <TextView
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycleView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="My Department complaints Fragment"
-        android:textSize="18dp" />
-
+        android:layout_height="match_parent" />
 
 </LinearLayout>

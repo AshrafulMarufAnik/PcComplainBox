@@ -99,7 +99,7 @@ public class ComplainFragment extends Fragment implements View.OnClickListener {
                 String pcNumber = pcNumberEt.getText().toString().trim();
                 String roomNo = roomNumberEt.getText().toString().trim();
                 String description = descriptionEt.getText().toString().trim();
-                String complainStatus="Unsolved";
+                String complainStatus = "Unsolved";
 
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -108,8 +108,9 @@ public class ComplainFragment extends Fragment implements View.OnClickListener {
                     SimpleDateFormat mdformat = new SimpleDateFormat("yyyy / MM / dd ");
                     String date = mdformat.format(calendar.getTime());
 
-                    String complaintUserName = (String) dataSnapshot.child("name").getValue();
-                    final Complaint complaint =new Complaint(complaintUserId,complaintUserName,pcNumber,roomNo,description,complainStatus,date);
+                    final String complaintUserName = dataSnapshot.child("name").getValue().toString();
+                    final String complaintUserDept = dataSnapshot.child("department").getValue().toString();
+                    final Complaint complaint = new Complaint(complaintUserId, complaintUserName,complaintUserDept, pcNumber, roomNo, description, complainStatus, date);
 
                     FirebaseDatabase.getInstance().getReference("complaints")
                             .push().setValue(complaint).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -118,7 +119,7 @@ public class ComplainFragment extends Fragment implements View.OnClickListener {
                             progressBar.setVisibility(View.GONE);
                             if (task.isSuccessful()) {
                                 Toast.makeText(getContext(), "Your complaint submitted successfully  !!", Toast.LENGTH_LONG).show();
-                                startActivity(new Intent(getContext(),ProfileActivity.class));
+                                startActivity(new Intent(getContext(), ProfileActivity.class));
                             } else {
                                 Toast.makeText(getContext(), "error!!" + task.getException().getMessage(), Toast.LENGTH_LONG).show();
                             }

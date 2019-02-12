@@ -22,9 +22,9 @@
             android:icon="@drawable/ic_all"
             android:title="All Complaints" />
         <item
-            android:id="@+id/nv_manage_user"
+            android:id="@+id/nv_manage_users"
             android:icon="@drawable/ic_settings_black_24dp"
-            android:title="Manage User" />
+            android:title="Manage Users" />
 
 
 

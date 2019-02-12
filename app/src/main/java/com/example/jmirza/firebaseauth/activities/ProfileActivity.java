@@ -21,7 +21,7 @@ import android.widget.Toast;
 import com.example.jmirza.firebaseauth.R;
 import com.example.jmirza.firebaseauth.fragments.AllComplaintsFragment;
 import com.example.jmirza.firebaseauth.fragments.ComplainFragment;
-import com.example.jmirza.firebaseauth.fragments.ManageUserFragment;
+import com.example.jmirza.firebaseauth.fragments.ManageUsersFragment;
 import com.example.jmirza.firebaseauth.fragments.MyComplaintsFragment;
 import com.example.jmirza.firebaseauth.fragments.MyDeptComplaintsFragment;
 import com.example.jmirza.firebaseauth.fragments.ProfileFragment;
@@ -186,9 +186,9 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                         new PendingComplaintsFragment()).commit();
                 break;
-            case R.id.nv_manage_user:
+            case R.id.nv_manage_users:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                        new ManageUserFragment()).commit();
+                        new ManageUsersFragment()).commit();
                 break;
             case R.id.nv_my_dept_complaint:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
