@@ -89,11 +89,9 @@ public class PendingComplaintsFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 pendingComplaintList.clear();
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                    // TODO: handle the post
-                    for (DataSnapshot snapshot : postSnapshot.getChildren()) {
-                        pendingComplaints = snapshot.getValue(Complaint.class);
-                        pendingComplaintList.add(pendingComplaints);
-                    }
+                    pendingComplaints = postSnapshot.getValue(Complaint.class);
+                    pendingComplaintList.add(pendingComplaints);
+
                     complainAdapter = new ComplainAdapter(getContext(), pendingComplaintList);
                     recyclerView.setAdapter(complainAdapter);
                 }

@@ -36,10 +36,9 @@ public class MyDeptComplaintsFragment extends Fragment {
     private List<Complaint> myComplaintList;
     private FirebaseAuth uAuth;
     private DatabaseReference myComRef, myUserRef;
-    private String uId;
+    private User UserInfo;
     private FirebaseUser user;
     private Complaint userComplaints;
-    private User users;
     private Toolbar toolbar;
     private TextView toolbarTitle;
 
@@ -84,37 +83,37 @@ public class MyDeptComplaintsFragment extends Fragment {
     }
 
     private void myDeptComplaints() {
-        this.uId = user.getUid();
-        myComRef.addValueEventListener(new ValueEventListener() {
+        final String uId = user.getUid();
+        myUserRef = FirebaseDatabase.getInstance().getReference("users").child(uId);
+        myUserRef.addValueEventListener(new ValueEventListener() {
+            private String currentUserDept;
+
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                myComplaintList.clear();
-
-                for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                    userComplaints = postSnapshot.getValue(Complaint.class);
-                    final String userDept = userComplaints.complainUserDept;
-                    myUserRef = FirebaseDatabase.getInstance().getReference("users").child(uId);
-                    myUserRef.addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            users = dataSnapshot.getValue(User.class);
-                            if (users != null) {
-                                final String currentUserDept = users.department;
-                                if (currentUserDept.equals(userDept)) {
+                UserInfo = dataSnapshot.getValue(User.class);
+                if (UserInfo != null) {
+                    this.currentUserDept = UserInfo.department;
+                }
+                myComRef.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                            userComplaints = dataSnapshot1.getValue(Complaint.class);
+                            if (userComplaints != null) {
+                                final String userDept = userComplaints.complainUserDept;
+                                if (userDept.equals(currentUserDept)) {
                                     myComplaintList.add(userComplaints);
                                 }
                             }
                         }
+                        complainAdapter = new ComplainAdapter(getContext(), myComplaintList);
+                        recyclerView.setAdapter(complainAdapter);
+                    }
 
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                        }
-                    });
-                }
-                complainAdapter = new ComplainAdapter(getContext(), myComplaintList);
-                recyclerView.setAdapter(complainAdapter);
-
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                    }
+                });
             }
 
             @Override
@@ -122,7 +121,6 @@ public class MyDeptComplaintsFragment extends Fragment {
 
             }
         });
+
     }
-
-
 }

@@ -81,7 +81,6 @@ public class AllComplaintsFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 allComplaintList.clear();
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
-                    // TODO: handle the post
                     allComplaints = postSnapshot.getValue(Complaint.class);
                     allComplaintList.add(allComplaints);
                 }
