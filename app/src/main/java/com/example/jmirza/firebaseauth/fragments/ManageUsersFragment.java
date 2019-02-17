@@ -72,7 +72,7 @@ public class ManageUsersFragment extends Fragment {
         // setting up custom toolbar or actionbar
         toolbar = view.findViewById(R.id.toolbarID);
         toolbarTitle = view.findViewById(R.id.toolbar_title);
-        deptNames = getResources().getStringArray(R.array.deptType);
+        deptNames = getResources().getStringArray(R.array.departments);
         spinner = view.findViewById(R.id.spinnerID);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), R.layout.spinner_view, R.id.spinnerTv, deptNames);
         spinner.setAdapter(adapter);
@@ -86,6 +86,9 @@ public class ManageUsersFragment extends Fragment {
     }
 
     private void users() {
+        String selectedDept = spinner.getSelectedItem().toString();
+
+
     }
 
 

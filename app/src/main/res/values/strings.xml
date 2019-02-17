@@ -43,5 +43,12 @@
         <item>BBA</item>
     </string-array>
 
+    <string-array name="departments">
+        <item>All</item>
+        <item>CSE</item>
+        <item>EEE</item>
+        <item>BBA</item>
+    </string-array>
+
 
 </resources>
