@@ -16,7 +16,9 @@ import android.widget.TextView;
 import com.example.jmirza.firebaseauth.R;
 import com.example.jmirza.firebaseauth.activities.ProfileActivity;
 import com.example.jmirza.firebaseauth.adapters.ComplainAdapter;
+import com.example.jmirza.firebaseauth.adapters.UserAdapter;
 import com.example.jmirza.firebaseauth.models.Complaint;
+import com.example.jmirza.firebaseauth.models.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -32,13 +34,13 @@ public class ManageUsersFragment extends Fragment {
     private String[] deptNames;
     private Spinner spinner;
     private RecyclerView recyclerView;
-    private ComplainAdapter complainAdapter;
-    private List<Complaint> pendingComplaintList;
+    private UserAdapter userAdapter;
+    private List<User> usersList;
     private FirebaseAuth uAuth;
     private DatabaseReference myRef;
     private String uId;
     private FirebaseUser user;
-    private Complaint pendingComplaints;
+    private User myUser;
 
 
     @Nullable
@@ -79,6 +81,11 @@ public class ManageUsersFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+        users();
+
+    }
+
+    private void users() {
     }
 
 
