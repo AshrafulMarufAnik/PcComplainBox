@@ -16,8 +16,8 @@ import java.util.List;
 
 
 public class ComplainAdapter extends RecyclerView.Adapter<MyComplaintViewHolder> {
-    List<Complaint> myComplaintList;
-    Context context;
+   private List<Complaint> myComplaintList;
+   private Context context;
 
     public ComplainAdapter(Context context, List<Complaint> myComplaintList) {
         this.context = context;
@@ -34,17 +34,17 @@ public class ComplainAdapter extends RecyclerView.Adapter<MyComplaintViewHolder>
 
         return VH;
     }
-
+    // this method is use to put values into all views of cardview.
     @Override
-    public void onBindViewHolder(@NonNull MyComplaintViewHolder myViewHolder, final int i) {
+    public void onBindViewHolder(@NonNull MyComplaintViewHolder myComplaintViewHolder, final int i) {
 
         Complaint complaint = myComplaintList.get(i);
-        myViewHolder.roomNumber.setText(complaint.roomNo);
-        myViewHolder.pcNumber.setText(complaint.pcNumber);
-        myViewHolder.details.setText(complaint.description);
-        myViewHolder.status.setText(complaint.complainStatus);
+        myComplaintViewHolder.roomNumber.setText(complaint.roomNo);
+        myComplaintViewHolder.pcNumber.setText(complaint.pcNumber);
+        myComplaintViewHolder.details.setText(complaint.description);
+        myComplaintViewHolder.status.setText(complaint.complainStatus);
 
-        myViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+        myComplaintViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 

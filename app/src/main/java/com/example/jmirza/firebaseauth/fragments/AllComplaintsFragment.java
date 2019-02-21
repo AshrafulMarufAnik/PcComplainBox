@@ -48,7 +48,6 @@ public class AllComplaintsFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_complaints_all, container, false);
         initialization();
         onClick();
-
         return view;
     }
 
@@ -64,8 +63,6 @@ public class AllComplaintsFragment extends Fragment {
         // recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         allComplaintList = new ArrayList<>();
-
-
     }
 
 

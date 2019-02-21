@@ -16,8 +16,8 @@ import java.util.List;
 
 public class UserAdapter extends RecyclerView.Adapter<MyUserViewHolder> {
 
-    List<User> myUsersList;
-    Context context;
+    private List<User> myUsersList;
+    private Context context;
 
     public UserAdapter(Context context, List<User> myUsersList) {
         this.context = context;
@@ -28,10 +28,9 @@ public class UserAdapter extends RecyclerView.Adapter<MyUserViewHolder> {
     @Override
     public MyUserViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(context).inflate(R.layout.users_row, viewGroup, false);
-        MyUserViewHolder VH = new MyUserViewHolder(view);
-        return VH;
+        return new MyUserViewHolder(view);
     }
-
+    // this method use to bind data and child model view together
     @Override
     public void onBindViewHolder(@NonNull MyUserViewHolder myUserViewHolder, int i) {
 

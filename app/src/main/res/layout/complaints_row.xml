@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:cardElevation="9dp"
-    app:cardCornerRadius="10dp"
-    android:foreground="?selectableItemBackground"
     android:layout_margin="12dp"
-    app:cardBackgroundColor="#edebeb">
+    android:foreground="?selectableItemBackground"
+    app:cardBackgroundColor="#edebeb"
+    app:cardCornerRadius="10dp"
+    app:cardElevation="9dp">
 
     <LinearLayout
         android:id="@+id/linearLayoutID"
@@ -18,33 +18,34 @@
         <ImageView
             android:id="@+id/complaintsImageView"
             android:layout_width="match_parent"
-            android:background="@drawable/complaintcardview"
             android:layout_height="100dp"
+            android:background="@drawable/complaintcardview"
             android:scaleType="centerCrop" />
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/room_number"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Room Number : "
-            android:textColor="@color/colorPrimaryDark"
-            android:layout_gravity="center"
-            android:textSize="20dp"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/room_numberET"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="405"
-            android:textColor="@color/colorAccent"
-            android:layout_gravity="center"
-            android:textSize="20dp"/>
+            <TextView
+                android:id="@+id/room_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Room Number : "
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="20sp" />
 
-    </LinearLayout>
+            <TextView
+                android:id="@+id/room_numberET"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="405"
+                android:textColor="@color/colorAccent"
+                android:textSize="20sp" />
+
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -56,19 +57,19 @@
                 android:id="@+id/pc_number"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:text="Pc Number       : "
                 android:textColor="@color/colorPrimaryDark"
-                android:layout_gravity="center"
-                android:textSize="20dp"/>
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/pc_numberET"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:text="PC101"
                 android:textColor="@color/colorAccent"
-                android:layout_gravity="center"
-                android:textSize="20dp"/>
+                android:textSize="20sp" />
 
         </LinearLayout>
 
@@ -81,19 +82,19 @@
                 android:id="@+id/details"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:text="Details               : "
                 android:textColor="@color/colorPrimaryDark"
-                android:layout_gravity="center"
-                android:textSize="20dp"/>
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/detailsET"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:text="ram isn't working"
                 android:textColor="@color/colorAccent"
-                android:layout_gravity="center"
-                android:textSize="20dp"/>
+                android:textSize="20sp" />
 
         </LinearLayout>
 
@@ -106,19 +107,19 @@
                 android:id="@+id/status"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Status                :  "
-                android:textColor="@color/colorPrimaryDark"
                 android:layout_gravity="center"
-                android:textSize="20dp"/>
+                android:text="Status                : "
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/statusET"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:text="solved"
                 android:textColor="@color/colorAccent"
-                android:layout_gravity="center"
-                android:textSize="20dp"/>
+                android:textSize="20sp" />
 
         </LinearLayout>
 
