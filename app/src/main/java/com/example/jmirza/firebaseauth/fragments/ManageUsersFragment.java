@@ -10,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -78,19 +79,40 @@ public class ManageUsersFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         deptNames = getResources().getStringArray(R.array.departments);
         spinner = view.findViewById(R.id.spinnerID);
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), R.layout.spinner_view, R.id.spinnerTv, deptNames);
-        spinner.setAdapter(adapter);
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        viewAllUsers();
-
+        sortUser();
     }
 
-    private void viewAllUsers() {
-        final String selectedDept = spinner.getSelectedItem().toString();
+    private void sortUser() {
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), R.layout.spinner_view, R.id.spinnerTv, deptNames);
+        spinner.setAdapter(adapter);
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+                if (position == 0) {
+                    sortByAll();
+                } else if (position == 1) {
+                    sortByCSE();
+                } else if (position == 2) {
+                    sortByEEE();
+                } else if (position == 3) {
+                    sortByBBA();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+    }
+
+    private void sortByAll() {
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -98,7 +120,6 @@ public class ManageUsersFragment extends Fragment {
                 for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                     myUser = dataSnapshot1.getValue(User.class);
                     if (myUser != null) {
-                        String userDept = myUser.department;
                         usersList.add(myUser);
                     }
                 }
@@ -112,6 +133,87 @@ public class ManageUsersFragment extends Fragment {
             }
         });
     }
+
+    private void sortByCSE() {
+
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                usersList.clear();
+                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                    myUser = dataSnapshot1.getValue(User.class);
+                    if (myUser != null) {
+                        String userDept = myUser.department;
+                        if (userDept.equals("CSE")) {
+                            usersList.add(myUser);
+                        }
+                    }
+                }
+                userAdapter = new UserAdapter(getContext(), usersList);
+                recyclerView.setAdapter(userAdapter);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
+    private void sortByEEE() {
+
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                usersList.clear();
+                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                    myUser = dataSnapshot1.getValue(User.class);
+                    if (myUser != null) {
+                        String userDept = myUser.department;
+                        if (userDept.equals("EEE")) {
+                            usersList.add(myUser);
+                        }
+                    }
+                }
+                userAdapter = new UserAdapter(getContext(), usersList);
+                recyclerView.setAdapter(userAdapter);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
+    private void sortByBBA() {
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                usersList.clear();
+                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                    myUser = dataSnapshot1.getValue(User.class);
+                    if (myUser != null) {
+                        String userDept = myUser.department;
+                        if (userDept.equals("BBA")) {
+                            usersList.add(myUser);
+                        }
+                    }
+                }
+                userAdapter = new UserAdapter(getContext(), usersList);
+                recyclerView.setAdapter(userAdapter);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
 
 }
 

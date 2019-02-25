@@ -48,6 +48,7 @@ public class ComplainAdapter extends RecyclerView.Adapter<MyComplaintViewHolder>
             @Override
             public void onClick(View view) {
 
+
                 // Toast.makeText(context,myComplaintList.get(i),Toast.LENGTH_LONG).show();
 
             }
