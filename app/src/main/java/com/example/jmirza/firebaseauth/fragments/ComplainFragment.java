@@ -99,7 +99,8 @@ public class ComplainFragment extends Fragment implements View.OnClickListener {
                 String pcNumber = pcNumberEt.getText().toString().trim();
                 String roomNo = roomNumberEt.getText().toString().trim();
                 String description = descriptionEt.getText().toString().trim();
-                String complainStatus = "Unsolved";
+                String complainStatus = "Pending";
+                String complainNote = "null";
 
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -110,7 +111,7 @@ public class ComplainFragment extends Fragment implements View.OnClickListener {
 
                     final String complaintUserName = dataSnapshot.child("name").getValue().toString();
                     final String complaintUserDept = dataSnapshot.child("department").getValue().toString();
-                    final Complaint complaint = new Complaint(complaintUserId, complaintUserName,complaintUserDept, pcNumber, roomNo, description, complainStatus, date);
+                    final Complaint complaint = new Complaint(complaintUserId, complaintUserName,complaintUserDept, pcNumber, roomNo, description, complainStatus, date,complainNote);
 
                     FirebaseDatabase.getInstance().getReference("complaints")
                             .push().setValue(complaint).addOnCompleteListener(new OnCompleteListener<Void>() {

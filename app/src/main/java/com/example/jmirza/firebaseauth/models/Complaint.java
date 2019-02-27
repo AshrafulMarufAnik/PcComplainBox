@@ -8,6 +8,7 @@ public class Complaint {
     public String roomNo;
     public String description;
     public String complainStatus;
+    public String complainNote;
     public String complainDate;
 
     public Complaint() {
@@ -23,6 +24,19 @@ public class Complaint {
         this.description = description;
         this.complainStatus=complainStatus;
         this.complainDate=complainDate;
+
+    }
+
+    public Complaint(String complainUserId,String complainUserName,String complainUserDept,String pcNumber,String roomNo,String description,String complainStatus,String complainDate,String complainNote) {
+        this.complainUserId = complainUserId;
+        this.complainUserName = complainUserName;
+        this.complainUserDept = complainUserDept;
+        this.pcNumber = pcNumber;
+        this.roomNo = roomNo;
+        this.description = description;
+        this.complainStatus=complainStatus;
+        this.complainDate=complainDate;
+        this.complainNote=complainNote;
 
     }
 
