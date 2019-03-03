@@ -6,9 +6,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.jmirza.firebaseauth.R;
-import com.example.jmirza.firebaseauth.models.Complaint;
 import com.example.jmirza.firebaseauth.models.User;
 import com.example.jmirza.firebaseauth.viewholder.MyUserViewHolder;
 
@@ -30,11 +30,12 @@ public class UserAdapter extends RecyclerView.Adapter<MyUserViewHolder> {
         View view = LayoutInflater.from(context).inflate(R.layout.users_row, viewGroup, false);
         return new MyUserViewHolder(view);
     }
+
     // this method use to bind data and child model view together
     @Override
     public void onBindViewHolder(@NonNull MyUserViewHolder myUserViewHolder, int i) {
 
-        User user = myUsersList.get(i);
+        final User user = myUsersList.get(i);
         myUserViewHolder.userName.setText(user.name);
         myUserViewHolder.userPassword.setText(user.password);
         myUserViewHolder.userApproval.setText(user.approval);
@@ -44,7 +45,7 @@ public class UserAdapter extends RecyclerView.Adapter<MyUserViewHolder> {
             @Override
             public void onClick(View view) {
 
-                // Toast.makeText(context,myComplaintList.get(i),Toast.LENGTH_LONG).show();
+                Toast.makeText(context, user.name, Toast.LENGTH_LONG).show();
 
             }
         });
