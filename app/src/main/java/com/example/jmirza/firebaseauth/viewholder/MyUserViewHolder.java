@@ -7,7 +7,7 @@ import android.widget.TextView;
 
 import com.example.jmirza.firebaseauth.R;
 
-// this method use to find out the child model
+// this method is use to find out the child model
 
 public class MyUserViewHolder extends RecyclerView.ViewHolder {
 
