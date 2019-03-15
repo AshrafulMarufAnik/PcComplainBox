@@ -9,12 +9,21 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.jmirza.firebaseauth.R;
 import com.example.jmirza.firebaseauth.models.User;
 import com.example.jmirza.firebaseauth.viewholder.MyUserViewHolder;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.List;
 
@@ -23,6 +32,8 @@ public class UserAdapter extends RecyclerView.Adapter<MyUserViewHolder> {
     private List<User> myUsersList;
     private Context context;
     private Dialog mDialog;
+    private DatabaseReference myRef;
+    private User UserInfo;
 
     public UserAdapter(Context context, List<User> myUsersList) {
         this.context = context;
@@ -33,6 +44,7 @@ public class UserAdapter extends RecyclerView.Adapter<MyUserViewHolder> {
     @Override
     public MyUserViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(context).inflate(R.layout.users_row, viewGroup, false);
+        myRef = FirebaseDatabase.getInstance().getReference();
         return new MyUserViewHolder(view);
     }
 
@@ -54,13 +66,36 @@ public class UserAdapter extends RecyclerView.Adapter<MyUserViewHolder> {
         myUserViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                TextView userName = mDialog.findViewById(R.id.dialogUserTvID);
-                TextView approval = mDialog.findViewById(R.id.dialogApprovalEtID);
-                TextView status = mDialog.findViewById(R.id.dialogStatusEtID);
+                final TextView userName = mDialog.findViewById(R.id.dialogUserTvID);
+                final TextView approval = mDialog.findViewById(R.id.dialogApprovalEtID);
+                final TextView status = mDialog.findViewById(R.id.dialogStatusEtID);
+                Button saveBt = mDialog.findViewById(R.id.dialogSaveBT);
                 userName.setText(user.name);
                 approval.setText(user.approval);
                 status.setText(user.status);
+                saveBt.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        String userID = user.key;
+                        String approv = approval.getText().toString().trim();
+                        String state = status.getText().toString().trim();
+                        User editedUser= new User(userID,user.name,user.department,user.phone,user.email,user.password,user.occupation,user.deviceToken,state,approv);
+
+                        FirebaseDatabase.getInstance().getReference("users").child(userID)
+                                .setValue(editedUser).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+                                    mDialog.dismiss();
+                                }
+
+                            }
+                        });
+
+                    }
+                });
                 mDialog.show();
+
                // Toast.makeText(context, user.name, Toast.LENGTH_LONG).show();
 
             }

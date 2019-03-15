@@ -21,6 +21,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserInfo;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -32,14 +33,16 @@ import java.util.Objects;
 
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
-    TextInputEditText emailEt, passEt;
-    Button loginButton;
-    TextView registerTextView;
-    ProgressBar progressBar;
+    private TextInputEditText emailEt, passEt;
+    private Button loginButton;
+    private TextView registerTextView;
+    private ProgressBar progressBar;
     private FirebaseAuth uAuth;
     private DatabaseReference myRef;
-    String uId;
-    FirebaseUser user;
+    private String uId;
+    private FirebaseUser user;
+    private String app;
+    private String status;
     private static final String TAG = "LoginActivity";
 
     @Override
@@ -64,7 +67,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         progressBar = findViewById(R.id.progressBarId);
         String text = "Don't have an account? <font color='red'>Register</font>";
         registerTextView.setText(Html.fromHtml(text), TextView.BufferType.SPANNABLE);
-
     }
 
     public void onClick() {
@@ -87,17 +89,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     protected void onStart() {
         super.onStart();
-
-        if (uAuth.getCurrentUser() != null) {
-
-
-            if (uAuth.getCurrentUser().isEmailVerified()) {
+        if (user != null) {
+            if (user.isEmailVerified()) {
                 finish();
                 startActivity(new Intent(this, ProfileActivity.class));
             }
-
         }
-
     }
 
     public boolean checkValidity() {
@@ -134,10 +131,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
             uAuth.signInWithEmailAndPassword(email, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
-                public void onComplete(@NonNull Task<AuthResult> task) {
+                public void onComplete(@NonNull final Task<AuthResult> task) {
                     progressBar.setVisibility(View.GONE);
                     if (task.isSuccessful()) {
-                        if (uAuth.getCurrentUser() != null) {
+                        if (user != null) {
 
                             uId = uAuth.getCurrentUser().getUid();
                             final String deviceToken = FirebaseInstanceId.getInstance().getToken();
@@ -150,47 +147,51 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                                         if (dataSnapshot1.child("key").getValue().toString().equals(uId)) {
 
-                                            String userType = dataSnapshot1.child("occupation").getValue().toString();
+                                            final String userType = dataSnapshot1.child("occupation").getValue().toString();
+                                            final String userApproval = dataSnapshot1.child("approval").getValue().toString();
+                                            final String userStatus = dataSnapshot1.child("status").getValue().toString();
+                                            final boolean userPermit = currentUserState(userApproval, userStatus);
 
-                                            if (userType.equals("Student")) {
-                                                if (uAuth.getCurrentUser().isEmailVerified()) {
-                                                    myRef.child(uId).child("deviceToken").setValue(deviceToken);
-                                                    finish();
-                                                    Intent intent = new Intent(LoginActivity.this, ProfileActivity.class);
-                                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                                    startActivity(intent);
+                                            switch (userType) {
+                                                case "Student":
+                                                    if (user.isEmailVerified() && userPermit==true) {
+                                                        myRef.child(uId).child("deviceToken").setValue(deviceToken);
+                                                        finish();
+                                                        Intent intent = new Intent(LoginActivity.this, ProfileActivity.class);
+                                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                                        startActivity(intent);
 
-                                                } else {
-                                                    Toast.makeText(LoginActivity.this, "verify your email to login..", Toast.LENGTH_LONG).show();
+                                                    } else {
+                                                        Toast.makeText(LoginActivity.this, "Verify your email first to log in.if problem persists contact Admin", Toast.LENGTH_LONG).show();
+                                                    }
+                                                    break;
+                                                case "Personnel":
+                                                    if (user.isEmailVerified() && userPermit==true) {
+                                                        myRef.child(uId).child("deviceToken").setValue(deviceToken);
+                                                        finish();
+                                                        Intent intent = new Intent(LoginActivity.this, ProfileActivity.class);
+                                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                                        startActivity(intent);
 
-                                                }
+                                                    } else {
+                                                        Toast.makeText(LoginActivity.this, "Verify your email first to log in.if problem persists contact Admin", Toast.LENGTH_LONG).show();
 
+                                                    }
 
-                                            } else if (userType.equals("Personnel")) {
-                                                if (uAuth.getCurrentUser().isEmailVerified()) {
-                                                    myRef.child(uId).child("deviceToken").setValue(deviceToken);
-                                                    finish();
-                                                    Intent intent = new Intent(LoginActivity.this, ProfileActivity.class);
-                                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                                    startActivity(intent);
+                                                    break;
+                                                case "Admin":
+                                                    if (user.isEmailVerified() && userPermit==true) {
+                                                        myRef.child(uId).child("deviceToken").setValue(deviceToken);
+                                                        finish();
+                                                        Intent intent = new Intent(LoginActivity.this, ProfileActivity.class);
+                                                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                                        startActivity(intent);
 
-                                                } else {
-                                                    Toast.makeText(LoginActivity.this, "verify your email to login..", Toast.LENGTH_LONG).show();
+                                                    } else {
+                                                        Toast.makeText(LoginActivity.this, "Verify your email first to log in.if problem persists contact Admin", Toast.LENGTH_LONG).show();
 
-                                                }
-
-                                            } else if (userType.equals("Admin")) {
-                                                if (uAuth.getCurrentUser().isEmailVerified()) {
-                                                    myRef.child(uId).child("deviceToken").setValue(deviceToken);
-                                                    finish();
-                                                    Intent intent = new Intent(LoginActivity.this, ProfileActivity.class);
-                                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                                    startActivity(intent);
-
-                                                } else {
-                                                    Toast.makeText(LoginActivity.this, "verify your email to login..", Toast.LENGTH_LONG).show();
-
-                                                }
+                                                    }
+                                                    break;
                                             }
                                         }
                                     }
@@ -217,6 +218,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             });
         }
 
+    }
+
+    private boolean currentUserState(String approval, String status) {
+        boolean state = false;
+        if (approval.equals("yes") && status.equals("active")) {
+            state = true;
+        }
+        return state;
     }
 }
 
