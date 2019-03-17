@@ -41,8 +41,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private DatabaseReference myRef;
     private String uId;
     private FirebaseUser user;
-    private String app;
-    private String status;
+    public boolean userPermit;
     private static final String TAG = "LoginActivity";
 
     @Override
@@ -89,8 +88,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     protected void onStart() {
         super.onStart();
-        if (user != null) {
-            if (user.isEmailVerified()) {
+        if (uAuth.getCurrentUser() != null) {
+            if (uAuth.getCurrentUser().isEmailVerified() && userPermit) {
                 finish();
                 startActivity(new Intent(this, ProfileActivity.class));
             }
@@ -134,8 +133,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 public void onComplete(@NonNull final Task<AuthResult> task) {
                     progressBar.setVisibility(View.GONE);
                     if (task.isSuccessful()) {
-                        if (user != null) {
-
+                        if (uAuth.getCurrentUser() != null) {
                             uId = uAuth.getCurrentUser().getUid();
                             final String deviceToken = FirebaseInstanceId.getInstance().getToken();
 
@@ -150,11 +148,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                             final String userType = dataSnapshot1.child("occupation").getValue().toString();
                                             final String userApproval = dataSnapshot1.child("approval").getValue().toString();
                                             final String userStatus = dataSnapshot1.child("status").getValue().toString();
-                                            final boolean userPermit = currentUserState(userApproval, userStatus);
+                                            userPermit = currentUserState(userApproval, userStatus);
 
                                             switch (userType) {
                                                 case "Student":
-                                                    if (user.isEmailVerified() && userPermit==true) {
+                                                    if (uAuth.getCurrentUser().isEmailVerified() && userPermit) {
+                                                        Toast.makeText(LoginActivity.this, userType+ "is permitted to log in", Toast.LENGTH_LONG).show();
                                                         myRef.child(uId).child("deviceToken").setValue(deviceToken);
                                                         finish();
                                                         Intent intent = new Intent(LoginActivity.this, ProfileActivity.class);
@@ -162,11 +161,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                                         startActivity(intent);
 
                                                     } else {
-                                                        Toast.makeText(LoginActivity.this, "Verify your email first to log in.if problem persists contact Admin", Toast.LENGTH_LONG).show();
+                                                        Toast.makeText(LoginActivity.this, userType+ "Verify your email first to log in.if problem persists contact Admin", Toast.LENGTH_LONG).show();
+                                                        uAuth.signOut();
                                                     }
                                                     break;
                                                 case "Personnel":
-                                                    if (user.isEmailVerified() && userPermit==true) {
+                                                    if (uAuth.getCurrentUser().isEmailVerified() && userPermit) {
+                                                        Toast.makeText(LoginActivity.this, userType+ "is permitted to log in", Toast.LENGTH_LONG).show();
                                                         myRef.child(uId).child("deviceToken").setValue(deviceToken);
                                                         finish();
                                                         Intent intent = new Intent(LoginActivity.this, ProfileActivity.class);
@@ -174,13 +175,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                                         startActivity(intent);
 
                                                     } else {
-                                                        Toast.makeText(LoginActivity.this, "Verify your email first to log in.if problem persists contact Admin", Toast.LENGTH_LONG).show();
-
+                                                        Toast.makeText(LoginActivity.this, userType+ "Verify your email first to log in.if problem persists contact Admin", Toast.LENGTH_LONG).show();
+                                                        uAuth.signOut();
                                                     }
 
                                                     break;
                                                 case "Admin":
-                                                    if (user.isEmailVerified() && userPermit==true) {
+                                                    if (uAuth.getCurrentUser().isEmailVerified() && userPermit) {
+                                                        Toast.makeText(LoginActivity.this, userType+ "is permitted to log in", Toast.LENGTH_LONG).show();
                                                         myRef.child(uId).child("deviceToken").setValue(deviceToken);
                                                         finish();
                                                         Intent intent = new Intent(LoginActivity.this, ProfileActivity.class);
@@ -188,8 +190,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                                         startActivity(intent);
 
                                                     } else {
-                                                        Toast.makeText(LoginActivity.this, "Verify your email first to log in.if problem persists contact Admin", Toast.LENGTH_LONG).show();
-
+                                                        Toast.makeText(LoginActivity.this, userPermit +userApproval+userStatus+ "Verify your email first to log in.if problem persists contact Admin", Toast.LENGTH_LONG).show();
+                                                        uAuth.signOut();
                                                     }
                                                     break;
                                             }
@@ -220,9 +222,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     }
 
-    private boolean currentUserState(String approval, String status) {
+    public boolean currentUserState(String approval, String status) {
         boolean state = false;
-        if (approval.equals("yes") && status.equals("active")) {
+        if (approval.equals("true") && status.equals("true")) {
             state = true;
         }
         return state;
