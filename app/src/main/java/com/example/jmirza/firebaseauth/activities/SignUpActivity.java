@@ -45,6 +45,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
     private static String APPROVAL = "false";
     private FirebaseAuth uAuth;
     private static final String TAG = "RegisterActivity";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,19 +80,17 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         loginTextView.setOnClickListener(this);
     }
 
-  /*  @Override
+    @Override
     protected void onStart() {
         super.onStart();
         if (uAuth.getCurrentUser() != null) {
-
             if (uAuth.getCurrentUser().isEmailVerified()) {
                 finish();
                 startActivity(new Intent(this, ProfileActivity.class));
             }
 
         }
-
-    }*/
+    }
 
     @Override
     public void onClick(View view) {

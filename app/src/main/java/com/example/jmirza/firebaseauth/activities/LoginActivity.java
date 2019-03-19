@@ -89,7 +89,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     protected void onStart() {
         super.onStart();
         if (uAuth.getCurrentUser() != null) {
-            if (uAuth.getCurrentUser().isEmailVerified() && userPermit) {
+            if (uAuth.getCurrentUser().isEmailVerified()) {
                 finish();
                 startActivity(new Intent(this, ProfileActivity.class));
             }
@@ -153,7 +153,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                             switch (userType) {
                                                 case "Student":
                                                     if (uAuth.getCurrentUser().isEmailVerified() && userPermit) {
-                                                        Toast.makeText(LoginActivity.this, userType+ "is permitted to log in", Toast.LENGTH_LONG).show();
+                                                        Toast.makeText(LoginActivity.this, "logged in as " + userType, Toast.LENGTH_LONG).show();
                                                         myRef.child(uId).child("deviceToken").setValue(deviceToken);
                                                         finish();
                                                         Intent intent = new Intent(LoginActivity.this, ProfileActivity.class);
@@ -161,13 +161,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                                         startActivity(intent);
 
                                                     } else {
-                                                        Toast.makeText(LoginActivity.this, userType+ "Verify your email first to log in.if problem persists contact Admin", Toast.LENGTH_LONG).show();
+                                                        Toast.makeText(LoginActivity.this, userType + "Verify your email first to log in.if problem persists contact Admin", Toast.LENGTH_LONG).show();
                                                         uAuth.signOut();
                                                     }
                                                     break;
                                                 case "Personnel":
                                                     if (uAuth.getCurrentUser().isEmailVerified() && userPermit) {
-                                                        Toast.makeText(LoginActivity.this, userType+ "is permitted to log in", Toast.LENGTH_LONG).show();
+                                                        Toast.makeText(LoginActivity.this, "logged in as " + userType, Toast.LENGTH_LONG).show();
                                                         myRef.child(uId).child("deviceToken").setValue(deviceToken);
                                                         finish();
                                                         Intent intent = new Intent(LoginActivity.this, ProfileActivity.class);
@@ -175,14 +175,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                                         startActivity(intent);
 
                                                     } else {
-                                                        Toast.makeText(LoginActivity.this, userType+ "Verify your email first to log in.if problem persists contact Admin", Toast.LENGTH_LONG).show();
+                                                        Toast.makeText(LoginActivity.this, userType + "Verify your email first to log in.if problem persists contact Admin", Toast.LENGTH_LONG).show();
                                                         uAuth.signOut();
                                                     }
 
                                                     break;
                                                 case "Admin":
                                                     if (uAuth.getCurrentUser().isEmailVerified() && userPermit) {
-                                                        Toast.makeText(LoginActivity.this, userType+ "is permitted to log in", Toast.LENGTH_LONG).show();
+                                                        Toast.makeText(LoginActivity.this, "logged in as " + userType, Toast.LENGTH_LONG).show();
                                                         myRef.child(uId).child("deviceToken").setValue(deviceToken);
                                                         finish();
                                                         Intent intent = new Intent(LoginActivity.this, ProfileActivity.class);
@@ -190,7 +190,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                                         startActivity(intent);
 
                                                     } else {
-                                                        Toast.makeText(LoginActivity.this, userPermit +userApproval+userStatus+ "Verify your email first to log in.if problem persists contact Admin", Toast.LENGTH_LONG).show();
+                                                        Toast.makeText(LoginActivity.this, userPermit + userApproval + userStatus + "Verify your email first to log in.if problem persists contact Admin", Toast.LENGTH_LONG).show();
                                                         uAuth.signOut();
                                                     }
                                                     break;
