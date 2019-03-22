@@ -11,7 +11,7 @@ import com.example.jmirza.firebaseauth.R;
 
 public class MyComplaintViewHolder extends RecyclerView.ViewHolder {
 
-   public TextView roomNumber,pcNumber,details,status;
+   public TextView roomNumber,pcNumber,details,status,date;
 
 
     public MyComplaintViewHolder(@NonNull View itemView) {
@@ -21,5 +21,6 @@ public class MyComplaintViewHolder extends RecyclerView.ViewHolder {
         pcNumber=itemView.findViewById(R.id.pc_numberET);
         details=itemView.findViewById(R.id.detailsET);
         status=itemView.findViewById(R.id.statusET);
+        date=itemView.findViewById(R.id.dateET);
     }
 }

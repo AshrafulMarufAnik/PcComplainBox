@@ -63,7 +63,6 @@ public class ManageUsersFragment extends Fragment {
         ((ProfileActivity) getActivity()).setActionBarTitle("Manage users...");
     }
 
-
     private void onClick() {
 
     }

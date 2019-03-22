@@ -25,6 +25,7 @@ public class ComplainAdapter extends RecyclerView.Adapter<MyComplaintViewHolder>
     }
 
 
+
     // onCreateViewHolder method inflate child layout
     @NonNull
     @Override
@@ -43,6 +44,7 @@ public class ComplainAdapter extends RecyclerView.Adapter<MyComplaintViewHolder>
         myComplaintViewHolder.pcNumber.setText(complaint.pcNumber);
         myComplaintViewHolder.details.setText(complaint.description);
         myComplaintViewHolder.status.setText(complaint.complainStatus);
+        myComplaintViewHolder.date.setText(complaint.complainDate);
 
         myComplaintViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,11 +70,9 @@ public class ComplainAdapter extends RecyclerView.Adapter<MyComplaintViewHolder>
     }
 
     public void setSearchOperation(List<Complaint> allmyComplaintList) {
-
         myComplaintList = new ArrayList<>();
         myComplaintList.addAll(allmyComplaintList);
         notifyDataSetChanged();
-
 
     }
 }

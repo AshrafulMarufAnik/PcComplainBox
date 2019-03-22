@@ -1,5 +1,6 @@
 package com.example.jmirza.firebaseauth.fragments;
 
+
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -8,6 +9,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -27,7 +31,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AllComplaintsFragment extends Fragment {
+public class AllComplaintsFragment extends Fragment implements android.support.v7.widget.SearchView.OnQueryTextListener {
 
     private View view;
     private Toolbar toolbar;
@@ -39,6 +43,7 @@ public class AllComplaintsFragment extends Fragment {
     private DatabaseReference myRef;
     private FirebaseUser user;
     private Complaint allComplaints;
+    private android.support.v7.widget.SearchView searchView;
 
 
     @Nullable
@@ -46,6 +51,7 @@ public class AllComplaintsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         view = inflater.inflate(R.layout.fragment_complaints_all, container, false);
+        setHasOptionsMenu(true);
         initialization();
         onClick();
         return view;
@@ -102,5 +108,38 @@ public class AllComplaintsFragment extends Fragment {
 
     private void onClick() {
 
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        menu.clear();
+        inflater.inflate(R.menu.toolbar_menu, menu);
+        MenuItem item = menu.findItem(R.id.searchID);
+        item.setShowAsAction(MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW | MenuItem.SHOW_AS_ACTION_IF_ROOM);
+        searchView = (android.support.v7.widget.SearchView) item.getActionView();
+        searchView.setMaxWidth(Integer.MAX_VALUE);
+        searchView.setQueryHint(getString(R.string.search));
+        searchView.setOnQueryTextListener(this);
+
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String s) {
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String s) {
+        s=s.toLowerCase();
+        ArrayList<Complaint> newList = new ArrayList<>();
+        for (Complaint complaint : allComplaintList) {
+            String name = complaint.complainStatus.toLowerCase();
+            if (name.contains(s)) {
+                newList.add(complaint);
+            }
+        }
+        complainAdapter.setSearchOperation(newList);
+        return true;
     }
 }

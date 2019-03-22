@@ -33,7 +33,6 @@ public class UserAdapter extends RecyclerView.Adapter<MyUserViewHolder> {
     private Context context;
     private Dialog mDialog;
     private DatabaseReference myRef;
-    private User UserInfo;
 
     public UserAdapter(Context context, List<User> myUsersList) {
         this.context = context;

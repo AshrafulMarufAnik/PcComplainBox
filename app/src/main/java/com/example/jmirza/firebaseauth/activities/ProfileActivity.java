@@ -89,7 +89,7 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
         toolbarTitle = findViewById(R.id.toolbar_title);
         setActionBarTitle("Profile");
         setSupportActionBar(toolbar);
-
+      //  getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         drawer = findViewById(R.id.drawerLayoutID);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.nav_open, R.string.nav_close);
@@ -218,7 +218,7 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
+    /*@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.toolbar_menu, menu);
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
@@ -231,7 +231,7 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
             searchView.setOnQueryTextListener(this);
         }
         return true;
-    }
+    }*/
 
     @Override
     public boolean onQueryTextSubmit(String s) {
@@ -240,6 +240,7 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
 
     @Override
     public boolean onQueryTextChange(String s) {
+        s = s.toLowerCase();
 
         return true;
     }
