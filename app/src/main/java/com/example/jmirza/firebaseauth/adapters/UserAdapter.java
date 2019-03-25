@@ -57,7 +57,7 @@ public class UserAdapter extends RecyclerView.Adapter<MyUserViewHolder> {
         myUserViewHolder.userApproval.setText(user.approval);
         myUserViewHolder.userStatus.setText(user.status);
 
-        // dialog ini
+        // dialog initialization
         mDialog = new Dialog(context);
         mDialog.setContentView(R.layout.dialog_user);
         mDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -90,7 +90,6 @@ public class UserAdapter extends RecyclerView.Adapter<MyUserViewHolder> {
 
                             }
                         });
-
                     }
                 });
                 mDialog.show();

@@ -124,6 +124,8 @@ public class AllComplaintsFragment extends Fragment implements android.support.v
 
     }
 
+
+
     @Override
     public boolean onQueryTextSubmit(String s) {
         return false;
@@ -131,7 +133,7 @@ public class AllComplaintsFragment extends Fragment implements android.support.v
 
     @Override
     public boolean onQueryTextChange(String s) {
-        s=s.toLowerCase();
+        s = s.toLowerCase();
         ArrayList<Complaint> newList = new ArrayList<>();
         for (Complaint complaint : allComplaintList) {
             String name = complaint.complainStatus.toLowerCase();

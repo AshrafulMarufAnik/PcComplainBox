@@ -53,7 +53,6 @@ public class ComplainFragment extends Fragment implements View.OnClickListener {
         return view;
     }
 
-
     private void initialization() {
         uAuth = FirebaseAuth.getInstance();
         user = uAuth.getCurrentUser();
@@ -82,8 +81,6 @@ public class ComplainFragment extends Fragment implements View.OnClickListener {
         if (view.getId() == R.id.createID) {
             createComplaint();
         }
-
-
     }
 
     private void createComplaint() {
@@ -106,12 +103,14 @@ public class ComplainFragment extends Fragment implements View.OnClickListener {
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
                     Calendar calendar = Calendar.getInstance();
-                    SimpleDateFormat mdformat = new SimpleDateFormat("yyyy / MM / dd ");
-                    String date = mdformat.format(calendar.getTime());
+                    SimpleDateFormat mdFormat = new SimpleDateFormat("yyyy / MM / dd ");
+                    String date = mdFormat.format(calendar.getTime());
 
                     final String complaintUserName = dataSnapshot.child("name").getValue().toString();
                     final String complaintUserDept = dataSnapshot.child("department").getValue().toString();
-                    final Complaint complaint = new Complaint(complaintUserId, complaintUserName,complaintUserDept, pcNumber, roomNo, description, complainStatus, date,complainNote);
+                    final String complaintUserDeviceToken = dataSnapshot.child("deviceToken").getValue().toString();
+                    final Complaint complaint = new Complaint(complaintUserId, complaintUserDeviceToken, complaintUserName,
+                            complaintUserDept, pcNumber, roomNo, description, complainStatus, date, complainNote);
 
                     FirebaseDatabase.getInstance().getReference("complaints")
                             .push().setValue(complaint).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -119,7 +118,8 @@ public class ComplainFragment extends Fragment implements View.OnClickListener {
                         public void onComplete(@NonNull Task<Void> task) {
                             progressBar.setVisibility(View.GONE);
                             if (task.isSuccessful()) {
-                                Toast.makeText(getContext(), "Your complaint submitted successfully  !!", Toast.LENGTH_LONG).show();
+                                Toast.makeText(getContext(), "Your complaint submitted successfully  !!",
+                                        Toast.LENGTH_LONG).show();
                                 startActivity(new Intent(getContext(), ProfileActivity.class));
                             } else {
                                 Toast.makeText(getContext(), "error!!" + task.getException().getMessage(), Toast.LENGTH_LONG).show();
@@ -139,7 +139,6 @@ public class ComplainFragment extends Fragment implements View.OnClickListener {
         }
 
     }
-
 
     public boolean checkValidity() {
 

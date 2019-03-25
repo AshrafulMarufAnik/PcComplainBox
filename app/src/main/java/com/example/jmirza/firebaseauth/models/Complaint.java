@@ -2,6 +2,7 @@ package com.example.jmirza.firebaseauth.models;
 
 public class Complaint {
     public String complainUserId;
+    public String complainUserDeviceToken;
     public String complainUserName;
     public String complainUserDept;
     public String pcNumber;
@@ -27,8 +28,9 @@ public class Complaint {
 
     }
 
-    public Complaint(String complainUserId,String complainUserName,String complainUserDept,String pcNumber,String roomNo,String description,String complainStatus,String complainDate,String complainNote) {
+    public Complaint(String complainUserId,String complainUserDeviceToken,String complainUserName,String complainUserDept,String pcNumber,String roomNo,String description,String complainStatus,String complainDate,String complainNote) {
         this.complainUserId = complainUserId;
+        this.complainUserDeviceToken = complainUserDeviceToken;
         this.complainUserName = complainUserName;
         this.complainUserDept = complainUserDept;
         this.pcNumber = pcNumber;
