@@ -125,7 +125,6 @@ public class AllComplaintsFragment extends Fragment implements android.support.v
     }
 
 
-
     @Override
     public boolean onQueryTextSubmit(String s) {
         return false;

@@ -37,6 +37,7 @@ public class ComplainFragment extends Fragment implements View.OnClickListener {
     Button createButton;
     public FirebaseAuth uAuth;
     public DatabaseReference myRef;
+    public DatabaseReference myComRef;
     public View view;
     public ProgressBar progressBar;
     FirebaseUser user;
@@ -61,6 +62,7 @@ public class ComplainFragment extends Fragment implements View.OnClickListener {
         roomNumberEt = view.findViewById(R.id.roomNoET);
         descriptionEt = view.findViewById(R.id.descriptionID);
         createButton = view.findViewById(R.id.createID);
+        myComRef = FirebaseDatabase.getInstance().getReference("complaints");
     }
 
     @Override
@@ -105,29 +107,29 @@ public class ComplainFragment extends Fragment implements View.OnClickListener {
                     Calendar calendar = Calendar.getInstance();
                     SimpleDateFormat mdFormat = new SimpleDateFormat("yyyy / MM / dd ");
                     String date = mdFormat.format(calendar.getTime());
-
+                    final String complainPushId = myComRef.push().getKey();
                     final String complaintUserName = dataSnapshot.child("name").getValue().toString();
                     final String complaintUserDept = dataSnapshot.child("department").getValue().toString();
                     final String complaintUserDeviceToken = dataSnapshot.child("deviceToken").getValue().toString();
-                    final Complaint complaint = new Complaint(complaintUserId, complaintUserDeviceToken, complaintUserName,
-                            complaintUserDept, pcNumber, roomNo, description, complainStatus, date, complainNote);
-
-                    FirebaseDatabase.getInstance().getReference("complaints")
-                            .push().setValue(complaint).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            progressBar.setVisibility(View.GONE);
-                            if (task.isSuccessful()) {
-                                Toast.makeText(getContext(), "Your complaint submitted successfully  !!",
-                                        Toast.LENGTH_LONG).show();
-                                startActivity(new Intent(getContext(), ProfileActivity.class));
-                            } else {
-                                Toast.makeText(getContext(), "error!!" + task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                    final Complaint complaint = new Complaint(complainPushId, complaintUserId,complaintUserName,
+                            complaintUserDept,complaintUserDeviceToken ,pcNumber, roomNo, description, complainStatus, date, complainNote);
+                    if (complainPushId != null) {
+                        FirebaseDatabase.getInstance().getReference("complaints").child(complainPushId)
+                                .setValue(complaint).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                progressBar.setVisibility(View.GONE);
+                                if (task.isSuccessful()) {
+                                    Toast.makeText(getContext(), "Your complaint submitted successfully  !!",
+                                            Toast.LENGTH_LONG).show();
+                                    startActivity(new Intent(getContext(), ProfileActivity.class));
+                                } else {
+                                    Toast.makeText(getContext(), "error!!" + task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                                }
                             }
-                        }
 
-
-                    });
+                        });
+                    }
                 }
 
                 @Override
@@ -137,7 +139,6 @@ public class ComplainFragment extends Fragment implements View.OnClickListener {
             });
 
         }
-
     }
 
     public boolean checkValidity() {

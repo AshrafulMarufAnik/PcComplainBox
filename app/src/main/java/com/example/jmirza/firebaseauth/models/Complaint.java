@@ -1,10 +1,11 @@
 package com.example.jmirza.firebaseauth.models;
 
 public class Complaint {
+    public String complainId;
     public String complainUserId;
-    public String complainUserDeviceToken;
     public String complainUserName;
     public String complainUserDept;
+    public String complainUserDeviceToken;
     public String pcNumber;
     public String roomNo;
     public String description;
@@ -16,29 +17,30 @@ public class Complaint {
 
     }
 
-    public Complaint(String complainUserId,String complainUserName,String complainUserDept,String pcNumber,String roomNo,String description,String complainStatus,String complainDate) {
+    public Complaint(String complainUserId, String complainUserName, String complainUserDept, String pcNumber, String roomNo, String description, String complainStatus, String complainDate) {
         this.complainUserId = complainUserId;
         this.complainUserName = complainUserName;
         this.complainUserDept = complainUserDept;
         this.pcNumber = pcNumber;
         this.roomNo = roomNo;
         this.description = description;
-        this.complainStatus=complainStatus;
-        this.complainDate=complainDate;
+        this.complainStatus = complainStatus;
+        this.complainDate = complainDate;
 
     }
 
-    public Complaint(String complainUserId,String complainUserDeviceToken,String complainUserName,String complainUserDept,String pcNumber,String roomNo,String description,String complainStatus,String complainDate,String complainNote) {
+    public Complaint(String complainId, String complainUserId, String complainUserName, String complainUserDept, String complainUserDeviceToken, String pcNumber, String roomNo, String description, String complainStatus, String complainDate, String complainNote) {
+        this.complainId = complainId;
         this.complainUserId = complainUserId;
-        this.complainUserDeviceToken = complainUserDeviceToken;
         this.complainUserName = complainUserName;
         this.complainUserDept = complainUserDept;
+        this.complainUserDeviceToken = complainUserDeviceToken;
         this.pcNumber = pcNumber;
         this.roomNo = roomNo;
         this.description = description;
-        this.complainStatus=complainStatus;
-        this.complainDate=complainDate;
-        this.complainNote=complainNote;
+        this.complainStatus = complainStatus;
+        this.complainDate = complainDate;
+        this.complainNote = complainNote;
 
     }
 

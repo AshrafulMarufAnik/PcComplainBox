@@ -51,5 +51,12 @@
         <item>BBA</item>
     </string-array>
 
+    <string-array name="complainStatus">
+        <item>Pending</item>
+        <item>In Process</item>
+        <item>Solved</item>
+        <item>Unsolved</item>
+    </string-array>
+
 
 </resources>
