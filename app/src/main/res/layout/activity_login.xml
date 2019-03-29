@@ -12,8 +12,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="45dp"
-        android:orientation="vertical"
-        android:gravity="center">
+        android:gravity="center"
+        android:orientation="vertical">
 
         <ImageView
             android:layout_width="100dp"
@@ -63,13 +63,11 @@
             android:textSize="16sp" />
     </android.support.design.widget.TextInputLayout>
 
-
     <ProgressBar
         android:id="@+id/progressBarId"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone" />
-
 
     <TextView
         android:id="@+id/signUpTvId"
@@ -79,7 +77,6 @@
         android:layout_marginTop="60dp"
         android:textColor="#f7f6f6"
         android:textSize="17dp" />
-
 
     <Button
         android:id="@+id/loginBtnId"
@@ -91,6 +88,4 @@
         android:textAllCaps="false"
         android:textColor="#fff"
         android:textStyle="bold" />
-
-
 </LinearLayout>

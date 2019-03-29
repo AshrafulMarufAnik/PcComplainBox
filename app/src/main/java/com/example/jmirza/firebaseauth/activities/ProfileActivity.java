@@ -19,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.jmirza.firebaseauth.R;
+import com.example.jmirza.firebaseauth.adapters.ComplainAdapter;
 import com.example.jmirza.firebaseauth.fragments.AllComplaintsFragment;
 import com.example.jmirza.firebaseauth.fragments.ComplainFragment;
 import com.example.jmirza.firebaseauth.fragments.ManageUsersFragment;
@@ -244,7 +245,6 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
 
         return true;
     }
-
     public void setActionBarTitle(String title) {
         toolbarTitle.setText(title);
     }

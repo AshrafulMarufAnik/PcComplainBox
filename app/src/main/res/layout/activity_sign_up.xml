@@ -16,10 +16,10 @@
         android:orientation="horizontal">
 
         <RadioButton
-            android:id="@+id/studentRbId"
+            android:id="@+id/userRbId"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/as_student"
+            android:text="@string/as_user"
             android:textSize="14sp" />
 
         <RadioButton
@@ -52,17 +52,17 @@
             android:layout_width="wrap_content"
             android:layout_height="46dp"
             android:layout_gravity="center"
-            android:layout_marginLeft="100dp"
+            android:layout_marginStart="100dp"
             android:layout_marginTop="15dp"
-            android:text="Department"
-            android:textSize="15dp" />
+            android:text="@string/department"
+            android:textSize="15sp" />
 
         <Spinner
             android:id="@+id/spinnerID"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
             android:layout_marginTop="2dp">
 
         </Spinner>
@@ -147,24 +147,21 @@
         android:visibility="gone" />
 
     <TextView
-        android:id="@+id/versificationTV"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <TextView
         android:id="@+id/signInTvId"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginBottom="20dp"
-        android:textSize="17dp" />
+        android:layout_marginTop="20dp"
+        android:textColor="#f7f6f6"
+        android:textSize="17sp" />
 
     <Button
         android:id="@+id/registerBtnId"
         android:layout_width="match_parent"
         android:layout_height="80dp"
+        android:layout_marginTop="20dp"
         android:background="@drawable/buttonstyleithgradient"
-        android:hint="Register"
+        android:text="Register"
         android:textAllCaps="false"
         android:textColor="#fff"
         android:textStyle="bold" />

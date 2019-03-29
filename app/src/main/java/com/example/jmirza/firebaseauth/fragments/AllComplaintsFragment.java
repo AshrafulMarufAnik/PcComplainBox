@@ -62,6 +62,7 @@ public class AllComplaintsFragment extends Fragment implements android.support.v
         uAuth = FirebaseAuth.getInstance();
         user = uAuth.getCurrentUser();
         myRef = FirebaseDatabase.getInstance().getReference("complaints");
+
         // setting up custom toolbar or actionbar
         toolbar = view.findViewById(R.id.toolbarID);
         toolbarTitle = view.findViewById(R.id.toolbar_title);
@@ -69,6 +70,7 @@ public class AllComplaintsFragment extends Fragment implements android.support.v
         // recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         allComplaintList = new ArrayList<>();
+
     }
 
 

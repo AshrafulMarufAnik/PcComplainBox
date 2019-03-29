@@ -32,7 +32,6 @@ import com.google.firebase.iid.FirebaseInstanceId;
 
 public class SignUpActivity extends AppCompatActivity implements View.OnClickListener {
     private TextInputEditText nameEt, phoneEt, emailEt, passEt;
-    private TextView verifiedEmailEt;
     private ProgressBar progressBar;
     private Button registerButton;
     private TextView loginTextView;
@@ -71,8 +70,6 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
         loginTextView.setText(Html.fromHtml(text), TextView.BufferType.SPANNABLE);
         progressBar = findViewById(R.id.progressBarID);
         uAuth = FirebaseAuth.getInstance();
-        verifiedEmailEt = findViewById(R.id.versificationTV);
-
     }
 
     public void onClick() {
@@ -126,7 +123,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                 this.userType = strNew.trim();
                 this.dept = spinner.getSelectedItem().toString();
 
-                if (id == R.id.studentRbId) {
+                if (id == R.id.userRbId) {
                     progressBar.setVisibility(View.VISIBLE);
                     uAuth.createUserWithEmailAndPassword(email, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
@@ -134,9 +131,9 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                             if (task.isSuccessful()) {
                                 String deviceToken = FirebaseInstanceId.getInstance().getToken();
                                 String userId = uAuth.getCurrentUser().getUid();
-                                User student = new User(userId, name, dept, phone, email, pass, userType, deviceToken, STATUS, APPROVAL);
+                                User user = new User(userId, name, dept, phone, email, pass, userType, deviceToken, STATUS, APPROVAL);
                                 FirebaseDatabase.getInstance().getReference("users")
-                                        .child(uAuth.getCurrentUser().getUid()).setValue(student)
+                                        .child(uAuth.getCurrentUser().getUid()).setValue(user)
                                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                                             @Override
                                             public void onComplete(@NonNull Task<Void> task) {
@@ -147,7 +144,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                                                                 @Override
                                                                 public void onComplete(@NonNull Task<Void> task) {
                                                                     if (task.isSuccessful()) {
-                                                                        Toast.makeText(getApplicationContext(), "Student registered succesfully!..Check your email for verification..", Toast.LENGTH_LONG).show();
+                                                                        Toast.makeText(getApplicationContext(), "User registered succesfully!..Check your email for verification..", Toast.LENGTH_LONG).show();
                                                                         finish();
                                                                         Intent intent = new Intent(SignUpActivity.this, LoginActivity.class);
                                                                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -157,7 +154,7 @@ public class SignUpActivity extends AppCompatActivity implements View.OnClickLis
                                                                 }
                                                             });
                                                 } else {
-                                                    Toast.makeText(getApplicationContext(), "Student registration failed! try again.." + task.getException().getMessage(), Toast.LENGTH_LONG).show();
+                                                    Toast.makeText(getApplicationContext(), "User registration failed! try again.." + task.getException().getMessage(), Toast.LENGTH_LONG).show();
                                                 }
 
                                             }

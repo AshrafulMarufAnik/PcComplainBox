@@ -53,13 +53,12 @@
         <Spinner
             android:id="@+id/statusSpinnerID"
             android:layout_width="0dp"
-            android:layout_weight="50"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginEnd="110dp"
-            android:layout_marginTop="2dp">
+            android:layout_marginTop="2dp"
+            android:layout_marginEnd="20dp"
+            android:layout_weight="50" />
 
-        </Spinner>
 
     </LinearLayout>
 
@@ -75,9 +74,9 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="50"
-            android:text="Note"
+            android:text="@string/note"
             android:textColor="#0bcce6"
-            android:textSize="17dp" />
+            android:textSize="17sp" />
 
         <EditText
             android:id="@+id/dialognoteEtID"
