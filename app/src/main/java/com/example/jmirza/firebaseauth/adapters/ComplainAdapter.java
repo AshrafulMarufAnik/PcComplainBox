@@ -75,14 +75,14 @@ public class ComplainAdapter extends RecyclerView.Adapter<MyComplaintViewHolder>
 
         if (status.equals("pending")) {
             myComplaintViewHolder.roomNumber.setText(complaint.roomNo);
-            myComplaintViewHolder.pcNumber.setText(complaint.pcNumber);
+            myComplaintViewHolder.deviceNumber.setText(complaint.deviceNumber);
             myComplaintViewHolder.details.setText(complaint.description);
             myComplaintViewHolder.status.setText(complaint.complainStatus);
             myComplaintViewHolder.noteLayout.setVisibility(View.GONE);
             myComplaintViewHolder.date.setText(complaint.complainDate);
         } else {
             myComplaintViewHolder.roomNumber.setText(complaint.roomNo);
-            myComplaintViewHolder.pcNumber.setText(complaint.pcNumber);
+            myComplaintViewHolder.deviceNumber.setText(complaint.deviceNumber);
             myComplaintViewHolder.details.setText(complaint.description);
             myComplaintViewHolder.status.setText(complaint.complainStatus);
             myComplaintViewHolder.note.setText(complaint.complainNote);
@@ -128,18 +128,20 @@ public class ComplainAdapter extends RecyclerView.Adapter<MyComplaintViewHolder>
                                     if (!comStatus.equals("Pending")) {
 
                                         Complaint editedCom = new Complaint(complainID, complaint.complainUserId, complaint.complainUserName,
-                                                complaint.complainUserDept, complaint.complainUserDeviceToken, complaint.pcNumber, complaint.roomNo,
+                                                complaint.complainUserDept, complaint.complainUserDeviceToken, complaint.deviceNumber, complaint.roomNo,
                                                 complaint.description, complaint.complainStatus, complaint.complainDate, complaint.complainNote);
-                                        FirebaseDatabase.getInstance().getReference("complaints").child(complainID)
-                                                .setValue(editedCom).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<Void> task) {
-                                                if (task.isSuccessful()) {
-                                                    mDialog.dismiss();
-                                                }
+                                        if (complainID != null) {
+                                            FirebaseDatabase.getInstance().getReference("complaints").child(complainID)
+                                                    .setValue(editedCom).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<Void> task) {
+                                                    if (task.isSuccessful()) {
+                                                        mDialog.dismiss();
+                                                    }
 
-                                            }
-                                        });
+                                                }
+                                            });
+                                        }
 
 
                                     }

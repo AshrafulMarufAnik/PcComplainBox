@@ -8,15 +8,13 @@ public class User {
 
     }
 
-    public User(String name, String department, String phone, String email, String password, String occupation) {
-        this.occupation = occupation;
+
+    public User(String name, String department, String phone, String password) {
         this.name = name;
         this.department = department;
         this.phone = phone;
-        this.email = email;
         this.password = password;
     }
-
 
     public User(String uId, String name, String department, String phone, String email, String password, String occupation, String deviceToken, String status, String approval) {
         this.uId = uId;

@@ -6,7 +6,7 @@ public class Complaint {
     public String complainUserName;
     public String complainUserDept;
     public String complainUserDeviceToken;
-    public String pcNumber;
+    public String deviceNumber;
     public String roomNo;
     public String description;
     public String complainStatus;
@@ -17,25 +17,13 @@ public class Complaint {
 
     }
 
-    public Complaint(String complainUserId, String complainUserName, String complainUserDept, String pcNumber, String roomNo, String description, String complainStatus, String complainDate) {
-        this.complainUserId = complainUserId;
-        this.complainUserName = complainUserName;
-        this.complainUserDept = complainUserDept;
-        this.pcNumber = pcNumber;
-        this.roomNo = roomNo;
-        this.description = description;
-        this.complainStatus = complainStatus;
-        this.complainDate = complainDate;
-
-    }
-
-    public Complaint(String complainId, String complainUserId, String complainUserName, String complainUserDept, String complainUserDeviceToken, String pcNumber, String roomNo, String description, String complainStatus, String complainDate, String complainNote) {
+    public Complaint(String complainId, String complainUserId, String complainUserName, String complainUserDept, String complainUserDeviceToken, String deviceNumber, String roomNo, String description, String complainStatus, String complainDate, String complainNote) {
         this.complainId = complainId;
         this.complainUserId = complainUserId;
         this.complainUserName = complainUserName;
         this.complainUserDept = complainUserDept;
         this.complainUserDeviceToken = complainUserDeviceToken;
-        this.pcNumber = pcNumber;
+        this.deviceNumber = deviceNumber;
         this.roomNo = roomNo;
         this.description = description;
         this.complainStatus = complainStatus;

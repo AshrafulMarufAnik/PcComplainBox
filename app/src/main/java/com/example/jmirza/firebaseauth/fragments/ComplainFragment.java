@@ -111,8 +111,8 @@ public class ComplainFragment extends Fragment implements View.OnClickListener {
                     final String complaintUserName = dataSnapshot.child("name").getValue().toString();
                     final String complaintUserDept = dataSnapshot.child("department").getValue().toString();
                     final String complaintUserDeviceToken = dataSnapshot.child("deviceToken").getValue().toString();
-                    final Complaint complaint = new Complaint(complainPushId, complaintUserId,complaintUserName,
-                            complaintUserDept,complaintUserDeviceToken ,pcNumber, roomNo, description, complainStatus, date, complainNote);
+                    final Complaint complaint = new Complaint(complainPushId, complaintUserId, complaintUserName,
+                            complaintUserDept, complaintUserDeviceToken, pcNumber, roomNo, description, complainStatus, date, complainNote);
                     if (complainPushId != null) {
                         FirebaseDatabase.getInstance().getReference("complaints").child(complainPushId)
                                 .setValue(complaint).addOnCompleteListener(new OnCompleteListener<Void>() {

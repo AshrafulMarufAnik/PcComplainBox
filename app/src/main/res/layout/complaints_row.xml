@@ -63,7 +63,7 @@
                 android:textSize="20sp" />
 
             <TextView
-                android:id="@+id/pc_numberTV"
+                android:id="@+id/device_numberTV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"

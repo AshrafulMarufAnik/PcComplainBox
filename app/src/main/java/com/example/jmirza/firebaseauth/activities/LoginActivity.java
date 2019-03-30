@@ -143,7 +143,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                                     for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
 
-                                        if (dataSnapshot1.child("key").getValue().toString().equals(uId)) {
+                                        if (dataSnapshot1.child("uId").getValue().toString().equals(uId)) {
 
                                             final String userType = dataSnapshot1.child("occupation").getValue().toString();
                                             final String userApproval = dataSnapshot1.child("approval").getValue().toString();
@@ -151,7 +151,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                             userPermit = currentUserState(userApproval, userStatus);
 
                                             switch (userType) {
-                                                case "Student":
+                                                case "User":
                                                     if (uAuth.getCurrentUser().isEmailVerified() && userPermit) {
                                                         Toast.makeText(LoginActivity.this, "logged in as " + userType, Toast.LENGTH_LONG).show();
                                                         myRef.child(uId).child("deviceToken").setValue(deviceToken);

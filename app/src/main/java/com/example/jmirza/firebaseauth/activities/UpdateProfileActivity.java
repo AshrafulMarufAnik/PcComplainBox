@@ -124,13 +124,13 @@ public class UpdateProfileActivity extends AppCompatActivity implements View.OnC
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                    if(Objects.equals(dataSnapshot.child("student").child(uId).child("occupation").getValue(), "Student")){
+                    if(Objects.equals(dataSnapshot.child("users").child(uId).child("occupation").getValue(), "Student")){
 
                         userStudent =dataSnapshot.child("student").child(uId).getValue(User.class);
 
-                        User student = new User(name,userStudent.department,phone,userStudent.email,pass,userStudent.occupation);
+                        User user = new User(name,userStudent.department,phone,pass);
                         FirebaseDatabase.getInstance().getReference("student")
-                                .child(uAuth.getCurrentUser().getUid()).setValue(student).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                .child(uAuth.getCurrentUser().getUid()).setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
                                 if (task.isSuccessful()){
@@ -145,7 +145,7 @@ public class UpdateProfileActivity extends AppCompatActivity implements View.OnC
                     } else if (Objects.equals(dataSnapshot.child("personnel").child(uId).child("occupation").getValue(), "Personnel")) {
 
                         userPersonnel =dataSnapshot.child("personnel").child(uId).getValue(User.class);
-                        User personnel = new User(name,userPersonnel.department,phone,userPersonnel.email,pass,userPersonnel.occupation);
+                        User personnel = new User(name,userStudent.department,phone,pass);
                         FirebaseDatabase.getInstance().getReference("personnel")
                                 .child(uAuth.getCurrentUser().getUid()).setValue(personnel).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override

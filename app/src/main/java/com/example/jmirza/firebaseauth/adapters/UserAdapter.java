@@ -78,24 +78,23 @@ public class UserAdapter extends RecyclerView.Adapter<MyUserViewHolder> {
                         String userID = user.uId;
                         String approv = approval.getText().toString().trim();
                         String state = status.getText().toString().trim();
-                        User editedUser = new User(userID, user.name, user.department, user.phone, user.email, user.password, user.occupation, user.deviceToken, state, approv);
+                        User editedUser = new User(userID, user.name, user.department, user.phone, user.email, user.password, user.occupation, user.deviceToken,state, approv);
 
-                        FirebaseDatabase.getInstance().getReference("users").child(userID)
-                                .setValue(editedUser).addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                if (task.isSuccessful()) {
-                                    mDialog.dismiss();
+                        if (userID != null) {
+                            FirebaseDatabase.getInstance().getReference("users").child(userID)
+                                    .setValue(editedUser).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()) {
+                                        mDialog.dismiss();
+                                    }
+
                                 }
-
-                            }
-                        });
+                            });
+                        }
                     }
                 });
                 mDialog.show();
-
-                // Toast.makeText(context, user.name, Toast.LENGTH_LONG).show();
-
             }
         });
 

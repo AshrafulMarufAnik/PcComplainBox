@@ -59,7 +59,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         app:headerLayout="@layout/nav_header"
-        app:menu="@menu/drawer_menu_student" />
+        app:menu="@menu/drawer_menu_user" />
 
 
 </android.support.v4.widget.DrawerLayout>

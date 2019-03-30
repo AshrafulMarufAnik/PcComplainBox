@@ -1,7 +1,6 @@
 package com.example.jmirza.firebaseauth.activities;
 
-import android.app.SearchManager;
-import android.content.Context;
+
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -12,14 +11,13 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
+
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.jmirza.firebaseauth.R;
-import com.example.jmirza.firebaseauth.adapters.ComplainAdapter;
 import com.example.jmirza.firebaseauth.fragments.AllComplaintsFragment;
 import com.example.jmirza.firebaseauth.fragments.ComplainFragment;
 import com.example.jmirza.firebaseauth.fragments.ManageUsersFragment;
@@ -49,6 +47,7 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
     private String uId;
     private FirebaseUser user;
     private User UserInfo;
+    public boolean userPermit;
     private android.support.v7.widget.SearchView searchView;
 
 
@@ -90,7 +89,7 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
         toolbarTitle = findViewById(R.id.toolbar_title);
         setActionBarTitle("Profile");
         setSupportActionBar(toolbar);
-      //  getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //  getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         drawer = findViewById(R.id.drawerLayoutID);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.nav_open, R.string.nav_close);
@@ -107,32 +106,48 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
                 if (UserInfo != null) {
                     final String userType = UserInfo.occupation;
                     final String userName = UserInfo.name;
-
-                    if (userType.equals("Student")) {
-                        navigationView.getMenu().clear();
-                        navigationView.inflateMenu(R.menu.drawer_menu_student);
-                        View header = navigationView.getHeaderView(0);
-                        TextView uName = header.findViewById(R.id.nav_header_user_name);
-                        TextView uType = header.findViewById(R.id.nav_header_user_type);
-                        uName.setText(userName);
-                        uType.setText(userType);
-                    } else if (userType.equals("Personnel")) {
-                        navigationView.getMenu().clear();
-                        navigationView.inflateMenu(R.menu.drawer_menu_personnel);
-                        View header = navigationView.getHeaderView(0);
-                        TextView uName = header.findViewById(R.id.nav_header_user_name);
-                        TextView uType = header.findViewById(R.id.nav_header_user_type);
-                        uName.setText(userName);
-                        uType.setText(userType);
-                    } else if (userType.equals("Admin")) {
-                        navigationView.getMenu().clear();
-                        navigationView.inflateMenu(R.menu.drawer_menu_admin);
-                        View header = navigationView.getHeaderView(0);
-                        TextView uName = header.findViewById(R.id.nav_header_user_name);
-                        TextView uType = header.findViewById(R.id.nav_header_user_type);
-                        uName.setText(userName);
-                        uType.setText(userType);
+                    final String userApp = UserInfo.approval;
+                    final String userStatus = UserInfo.status;
+                    userPermit = currentUserState(userApp, userStatus);
+                    if (!userPermit) {
+                        uAuth.signOut();
+                        finish();
+                        startActivity(new Intent(ProfileActivity.this, LoginActivity.class));
+                    } else {
+                        switch (userType) {
+                            case "User": {
+                                navigationView.getMenu().clear();
+                                navigationView.inflateMenu(R.menu.drawer_menu_user);
+                                View header = navigationView.getHeaderView(0);
+                                TextView uName = header.findViewById(R.id.nav_header_user_name);
+                                TextView uType = header.findViewById(R.id.nav_header_user_type);
+                                uName.setText(userName);
+                                uType.setText(userType);
+                                break;
+                            }
+                            case "Personnel": {
+                                navigationView.getMenu().clear();
+                                navigationView.inflateMenu(R.menu.drawer_menu_personnel);
+                                View header = navigationView.getHeaderView(0);
+                                TextView uName = header.findViewById(R.id.nav_header_user_name);
+                                TextView uType = header.findViewById(R.id.nav_header_user_type);
+                                uName.setText(userName);
+                                uType.setText(userType);
+                                break;
+                            }
+                            case "Admin": {
+                                navigationView.getMenu().clear();
+                                navigationView.inflateMenu(R.menu.drawer_menu_admin);
+                                View header = navigationView.getHeaderView(0);
+                                TextView uName = header.findViewById(R.id.nav_header_user_name);
+                                TextView uType = header.findViewById(R.id.nav_header_user_type);
+                                uName.setText(userName);
+                                uType.setText(userType);
+                                break;
+                            }
+                        }
                     }
+
 
                 }
             }
@@ -149,6 +164,23 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
         navigationView.setNavigationItemSelectedListener(this);
     }
 
+  /*  @Override
+    protected void onPause() {
+        super.onPause();
+        if (!userPermit) {
+            uAuth.signOut();
+            finish();
+            startActivity(new Intent(ProfileActivity.this, LoginActivity.class));
+        }
+    }*/
+
+    public boolean currentUserState(String approval, String status) {
+        boolean state = false;
+        if (approval.equals("true") && status.equals("true")) {
+            state = true;
+        }
+        return state;
+    }
 
     @Override
     public void onBackPressed() {
@@ -245,6 +277,7 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
 
         return true;
     }
+
     public void setActionBarTitle(String title) {
         toolbarTitle.setText(title);
     }

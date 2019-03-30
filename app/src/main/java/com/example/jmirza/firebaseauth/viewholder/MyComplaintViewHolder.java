@@ -12,14 +12,14 @@ import com.example.jmirza.firebaseauth.R;
 
 public class MyComplaintViewHolder extends RecyclerView.ViewHolder {
 
-   public TextView roomNumber,pcNumber,details,status,date,note;
+   public TextView roomNumber,deviceNumber,details,status,date,note;
    public LinearLayout noteLayout;
 
 
     public MyComplaintViewHolder(@NonNull View itemView) {
         super(itemView);
         roomNumber=itemView.findViewById(R.id.room_numberTV);
-        pcNumber=itemView.findViewById(R.id.pc_numberTV);
+        deviceNumber=itemView.findViewById(R.id.device_numberTV);
         details=itemView.findViewById(R.id.detailsTV);
         status=itemView.findViewById(R.id.statusTV);
         noteLayout=itemView.findViewById(R.id.noteLayoutID);
