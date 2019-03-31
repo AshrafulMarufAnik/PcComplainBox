@@ -33,7 +33,7 @@ import java.util.Calendar;
 
 
 public class ComplainFragment extends Fragment implements View.OnClickListener {
-    TextInputEditText pcNumberEt, roomNumberEt, descriptionEt;
+    TextInputEditText deviceNumberEt, roomNumberEt, descriptionEt;
     Button createButton;
     public FirebaseAuth uAuth;
     public DatabaseReference myRef;
@@ -58,7 +58,7 @@ public class ComplainFragment extends Fragment implements View.OnClickListener {
         uAuth = FirebaseAuth.getInstance();
         user = uAuth.getCurrentUser();
         progressBar = view.findViewById(R.id.progressBarID);
-        pcNumberEt = view.findViewById(R.id.pcNumberEtID);
+        deviceNumberEt = view.findViewById(R.id.deviceNumberEtID);
         roomNumberEt = view.findViewById(R.id.roomNoET);
         descriptionEt = view.findViewById(R.id.descriptionID);
         createButton = view.findViewById(R.id.createID);
@@ -95,7 +95,7 @@ public class ComplainFragment extends Fragment implements View.OnClickListener {
             final String complaintUserId = user.getUid();
             myRef = FirebaseDatabase.getInstance().getReference("users").child(complaintUserId);
             myRef.addValueEventListener(new ValueEventListener() {
-                String pcNumber = pcNumberEt.getText().toString().trim();
+                String deviceNumber = deviceNumberEt.getText().toString().trim();
                 String roomNo = roomNumberEt.getText().toString().trim();
                 String description = descriptionEt.getText().toString().trim();
                 String complainStatus = "Pending";
@@ -112,7 +112,7 @@ public class ComplainFragment extends Fragment implements View.OnClickListener {
                     final String complaintUserDept = dataSnapshot.child("department").getValue().toString();
                     final String complaintUserDeviceToken = dataSnapshot.child("deviceToken").getValue().toString();
                     final Complaint complaint = new Complaint(complainPushId, complaintUserId, complaintUserName,
-                            complaintUserDept, complaintUserDeviceToken, pcNumber, roomNo, description, complainStatus, date, complainNote);
+                            complaintUserDept, complaintUserDeviceToken, deviceNumber, roomNo, description, complainStatus, date, complainNote);
                     if (complainPushId != null) {
                         FirebaseDatabase.getInstance().getReference("complaints").child(complainPushId)
                                 .setValue(complaint).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -144,14 +144,14 @@ public class ComplainFragment extends Fragment implements View.OnClickListener {
     public boolean checkValidity() {
 
         boolean cancel = false;
-        String uName = pcNumberEt.getText().toString();
+        String uName = deviceNumberEt.getText().toString();
         String roomNo = roomNumberEt.getText().toString();
         String description = descriptionEt.getText().toString();
 
         if (TextUtils.isEmpty(uName)) {
             cancel = true;
-            pcNumberEt.setError("Enter number of your complaint!!");
-            pcNumberEt.requestFocus();
+            deviceNumberEt.setError("Enter number of your complaint!!");
+            deviceNumberEt.requestFocus();
         } else if (TextUtils.isEmpty(roomNo)) {
             cancel = true;
             roomNumberEt.setError("Enter a room number!!");
