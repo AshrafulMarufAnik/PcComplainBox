@@ -129,7 +129,7 @@ public class ComplainAdapter extends RecyclerView.Adapter<MyComplaintViewHolder>
 
                                         Complaint editedCom = new Complaint(complainID, complaint.complainUserId, complaint.complainUserName,
                                                 complaint.complainUserDept, complaint.complainUserDeviceToken, complaint.deviceNumber, complaint.roomNo,
-                                                complaint.description, complaint.complainStatus, complaint.complainDate, complaint.complainNote);
+                                                complaint.description, comStatus, complaint.complainDate, comNote);
                                         if (complainID != null) {
                                             FirebaseDatabase.getInstance().getReference("complaints").child(complainID)
                                                     .setValue(editedCom).addOnCompleteListener(new OnCompleteListener<Void>() {
