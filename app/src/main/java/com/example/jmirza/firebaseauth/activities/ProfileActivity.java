@@ -1,6 +1,7 @@
 package com.example.jmirza.firebaseauth.activities;
 
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -8,6 +9,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -110,8 +112,8 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
                     final String userStatus = UserInfo.status;
                     userPermit = currentUserState(userApp, userStatus);
                     if (!userPermit) {
-                        uAuth.signOut();
-                        finish();
+                        //  uAuth.signOut();
+                        // finish();
                         startActivity(new Intent(ProfileActivity.this, LoginActivity.class));
                     } else {
                         switch (userType) {
@@ -164,7 +166,7 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
         navigationView.setNavigationItemSelectedListener(this);
     }
 
-  /*  @Override
+   /* @Override
     protected void onPause() {
         super.onPause();
         if (!userPermit) {
@@ -184,10 +186,31 @@ public class ProfileActivity extends AppCompatActivity implements NavigationView
 
     @Override
     public void onBackPressed() {
+
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            //  super.onBackPressed();
+            AlertDialog.Builder builder = new AlertDialog.Builder(ProfileActivity.this);
+            builder.setTitle("Exit Alert")
+                    .setMessage("Are you sure, you want to close the App ?")
+                    .setCancelable(false)
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int id) {
+
+                            ProfileActivity.this.finish();
+                        }
+                    })
+                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.cancel();
+                        }
+                    });
+            //Creating dialog box
+            AlertDialog dialog = builder.create();
+            dialog.show();
         }
 
     }

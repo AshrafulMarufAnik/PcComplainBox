@@ -86,6 +86,7 @@ public class UserAdapter extends RecyclerView.Adapter<MyUserViewHolder> {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if (task.isSuccessful()) {
+
                                         mDialog.dismiss();
                                     }
 
