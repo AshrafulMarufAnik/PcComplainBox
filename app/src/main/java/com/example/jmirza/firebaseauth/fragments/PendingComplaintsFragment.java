@@ -34,10 +34,7 @@ public class PendingComplaintsFragment extends Fragment {
     private RecyclerView recyclerView;
     private ComplainAdapter complainAdapter;
     private List<Complaint> pendingComplaintList;
-    private FirebaseAuth uAuth;
     private DatabaseReference myRef;
-    private String uId;
-    private FirebaseUser user;
     private Complaint pendingComplaints;
 
     @Nullable
@@ -62,9 +59,6 @@ public class PendingComplaintsFragment extends Fragment {
     }
 
     private void initialization() {
-
-        uAuth = FirebaseAuth.getInstance();
-        user = uAuth.getCurrentUser();
         myRef = FirebaseDatabase.getInstance().getReference();
         // setting up custom toolbar or actionbar
         toolbar = view.findViewById(R.id.toolbarID);
@@ -82,7 +76,6 @@ public class PendingComplaintsFragment extends Fragment {
     }
 
     private void pendingComplaints() {
-        uId = user.getUid();
         myRef = FirebaseDatabase.getInstance().getReference("complaints");
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
