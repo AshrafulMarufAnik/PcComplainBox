@@ -44,7 +44,7 @@ public class PendingComplaintsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        view = inflater.inflate(R.layout.fragment_complaints_unsolved, container, false);
+        view = inflater.inflate(R.layout.fragment_complaints_pending, container, false);
         initialization();
         onClick();
 
@@ -90,11 +90,13 @@ public class PendingComplaintsFragment extends Fragment {
                 pendingComplaintList.clear();
                 for (DataSnapshot postSnapshot : dataSnapshot.getChildren()) {
                     pendingComplaints = postSnapshot.getValue(Complaint.class);
-                    pendingComplaintList.add(pendingComplaints);
-
-                    complainAdapter = new ComplainAdapter(getContext(), pendingComplaintList);
-                    recyclerView.setAdapter(complainAdapter);
+                    String comStatus = pendingComplaints.complainStatus;
+                    if (comStatus.equals("Pending")) {
+                        pendingComplaintList.add(pendingComplaints);
+                    }
                 }
+                complainAdapter = new ComplainAdapter(getContext(), pendingComplaintList);
+                recyclerView.setAdapter(complainAdapter);
 
             }
 
