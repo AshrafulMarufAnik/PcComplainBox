@@ -52,6 +52,7 @@ public class UserAdapter extends RecyclerView.Adapter<MyUserViewHolder> {
     public void onBindViewHolder(@NonNull MyUserViewHolder myUserViewHolder, int i) {
 
         final User user = myUsersList.get(i);
+
         myUserViewHolder.userName.setText(user.name);
         myUserViewHolder.userPassword.setText(user.password);
         myUserViewHolder.userApproval.setText(user.approval);

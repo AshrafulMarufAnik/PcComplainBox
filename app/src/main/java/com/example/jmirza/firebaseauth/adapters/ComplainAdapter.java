@@ -97,108 +97,71 @@ public class ComplainAdapter extends RecyclerView.Adapter<MyComplaintViewHolder>
         ArrayAdapter<String> adapter = new ArrayAdapter<>(context, R.layout.spinner_view, R.id.spinnerTv, complaintStatus);
         spinner.setAdapter(adapter);
 
-        final String currentUserId = user.getUid();
-
-        userRef.child(currentUserId).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                final String currentUserName = dataSnapshot.child("occupation").getValue().toString().toLowerCase();
-                if (!currentUserName.equals("user")) {
-                    myComplaintViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            final TextView complaintUserName = mDialog.findViewById(R.id.dialogComplaintTvID);
-                            final TextView note = mDialog.findViewById(R.id.dialognoteEtID);
-                            Button saveBt = mDialog.findViewById(R.id.dialogSaveBT);
-                            final String comState = complaint.complainStatus;
-                            if (comState.equals("In Process")) {
-                                spinner.setSelection(1);
-                            } else if (comState.equals("Solved")) {
-                                spinner.setSelection(2);
-                            } else if (comState.equals("Unsolved")) {
-                                spinner.setSelection(3);
-                            }
-                            complaintUserName.setText(complaint.complainUserName);
-                            saveBt.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    String complainID = complaint.complainId;
-                                    String comStatus = spinner.getSelectedItem().toString();
-                                    String comNote = note.getText().toString().trim();
-                                    if (!comStatus.equals("Pending")) {
-
-                                        Complaint editedCom = new Complaint(complainID, complaint.complainUserId, complaint.complainUserName,
-                                                complaint.complainUserDept, complaint.complainUserDeviceToken, complaint.deviceNumber, complaint.roomNo,
-                                                complaint.description, comStatus, complaint.complainDate, comNote);
-                                        if (complainID != null) {
-                                            FirebaseDatabase.getInstance().getReference("complaints").child(complainID)
-                                                    .setValue(editedCom).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                @Override
-                                                public void onComplete(@NonNull Task<Void> task) {
-                                                    if (task.isSuccessful()) {
-                                                        mDialog.dismiss();
-                                                    }
-
-                                                }
-                                            });
-                                        }
-
-
-                                    }
+        if (user != null) {
+            final String currentUserId = user.getUid();
+            userRef.child(currentUserId).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    final String currentUserName = dataSnapshot.child("occupation").getValue().toString().toLowerCase();
+                    if (!currentUserName.equals("user")) {
+                        myComplaintViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                final TextView complaintUserName = mDialog.findViewById(R.id.dialogComplaintTvID);
+                                final TextView note = mDialog.findViewById(R.id.dialognoteEtID);
+                                Button saveBt = mDialog.findViewById(R.id.dialogSaveBT);
+                                final String comState = complaint.complainStatus;
+                                if (comState.equals("In Process")) {
+                                    spinner.setSelection(1);
+                                } else if (comState.equals("Solved")) {
+                                    spinner.setSelection(2);
+                                } else if (comState.equals("Unsolved")) {
+                                    spinner.setSelection(3);
                                 }
-                            });
-                            mDialog.show();
-                        }
-                    });
+                                complaintUserName.setText(complaint.complainUserName);
+                                saveBt.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        String complainID = complaint.complainId;
+                                        String comStatus = spinner.getSelectedItem().toString();
+                                        String comNote = note.getText().toString().trim();
+                                        if (!comStatus.equals("Pending")) {
 
+                                            Complaint editedCom = new Complaint(complainID, complaint.complainUserId, complaint.complainUserName,
+                                                    complaint.complainUserDept, complaint.complainUserDeviceToken, complaint.deviceNumber, complaint.roomNo,
+                                                    complaint.description, comStatus, complaint.complainDate, comNote);
+                                            if (complainID != null) {
+                                                FirebaseDatabase.getInstance().getReference("complaints").child(complainID)
+                                                        .setValue(editedCom).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<Void> task) {
+                                                        if (task.isSuccessful()) {
+                                                            mDialog.dismiss();
+                                                        }
+
+                                                    }
+                                                });
+                                            }
+
+
+                                        }
+                                    }
+                                });
+                                mDialog.show();
+                            }
+                        });
+
+
+                    }
 
                 }
 
-            }
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-
-
-    /*    myComplaintViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                final TextView complaintUserName = mDialog.findViewById(R.id.dialogComplaintTvID);
-                final TextView note = mDialog.findViewById(R.id.dialognoteEtID);
-                Button saveBt = mDialog.findViewById(R.id.dialogSaveBT);
-                complaintUserName.setText(complaint.complainUserName);
-                saveBt.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        String complainID = complaint.complainId;
-                        String comStatus = spinner.getSelectedItem().toString().toLowerCase();
-                        String comNote = note.getText().toString().trim();
-                        if (!comStatus.equals("pending")) {
-
-                            Complaint editedCom = new Complaint(complainID, complaint.complainUserId, complaint.complainUserName,
-                                    complaint.complainUserDept, complaint.complainUserDeviceToken, complaint.pcNumber, complaint.roomNo,
-                                    complaint.description, complaint.complainStatus, complaint.complainDate, complaint.complainNote);
-                            FirebaseDatabase.getInstance().getReference("complaints").child(complainID)
-                                    .setValue(editedCom).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    if (task.isSuccessful()) {
-                                        mDialog.dismiss();
-                                    }
-
-                                }
-                            });
-
-
-                        }
-                    }
-                });
-                mDialog.show();
-            }
-        });*/
+                }
+            });
+        }
 
     }
 

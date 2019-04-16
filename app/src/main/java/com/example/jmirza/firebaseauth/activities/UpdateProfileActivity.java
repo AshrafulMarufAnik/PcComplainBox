@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -29,14 +30,14 @@ import java.util.Objects;
 
 public class UpdateProfileActivity extends AppCompatActivity implements View.OnClickListener {
 
-   private User userStudent,userPersonnel;
-
-   private TextView nameEt,phoneEt,passwordEt;
-   private Button updateBt;
-   private FirebaseAuth uAuth;
-   private DatabaseReference myRef;
-   private FirebaseUser user;
-   private String uId;
+    private TextView nameEt, phoneEt, passwordEt;
+    private Button updateBt;
+    private FirebaseAuth uAuth;
+    private DatabaseReference myRef;
+    private FirebaseUser user;
+    private String uId;
+    private User UserInfo;
+    private static final String TAG = "UpdateProfileActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,38 +54,30 @@ public class UpdateProfileActivity extends AppCompatActivity implements View.OnC
 
     private void initialization() {
 
-        nameEt=findViewById(R.id.nameUpdateEtID);
-        phoneEt=findViewById(R.id.phoneUpdateEtID);
-        passwordEt=findViewById(R.id.passwordUpdateEtID);
-        updateBt=findViewById(R.id.updateBtID);
-        uAuth=FirebaseAuth.getInstance();
+        nameEt = findViewById(R.id.nameUpdateEtID);
+        phoneEt = findViewById(R.id.phoneUpdateEtID);
+        passwordEt = findViewById(R.id.passwordUpdateEtID);
+        updateBt = findViewById(R.id.updateBtID);
+        uAuth = FirebaseAuth.getInstance();
         user = uAuth.getCurrentUser();
-        myRef = FirebaseDatabase.getInstance().getReference();
 
-        if (uAuth.getCurrentUser()!=null){
+        if (user != null) {
             uId = user.getUid();
-
-
+            myRef = FirebaseDatabase.getInstance().getReference("users").child(uId);
             myRef.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    UserInfo = dataSnapshot.getValue(User.class);
+                    if (UserInfo != null) {
+                        final String userName = UserInfo.name;
+                        final String userPhone = UserInfo.phone;
+                        final String userPassword = UserInfo.password;
+                        nameEt.setText(userName);
+                        phoneEt.setText(userPhone);
+                        passwordEt.setText(userPassword);
 
-                    if(Objects.equals(dataSnapshot.child("student").child(uId).child("occupation").getValue(), "Student")){
-
-                        userStudent =dataSnapshot.child("student").child(uId).getValue(User.class);
-                        nameEt.setText(userStudent.name);
-                        phoneEt.setText(userStudent.phone);
-                        passwordEt.setText(userStudent.password);
-
-
-                    } else if (Objects.equals(dataSnapshot.child("personnel").child(uId).child("occupation").getValue(), "Personnel")) {
-
-
-                        userPersonnel =dataSnapshot.child("personnel").child(uId).getValue(User.class);
-                        nameEt.setText(userPersonnel.name);
-                        phoneEt.setText(userPersonnel.phone);
-                        passwordEt.setText(userPersonnel.password);
                     }
+
                 }
 
                 @Override
@@ -92,7 +85,6 @@ public class UpdateProfileActivity extends AppCompatActivity implements View.OnC
 
                 }
             });
-
         }
 
     }
@@ -101,63 +93,50 @@ public class UpdateProfileActivity extends AppCompatActivity implements View.OnC
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.updateBtID:
-
-
                 updateProfile();
                 break;
-
         }
     }
 
     private void updateProfile() {
 
-        if (uAuth.getCurrentUser()!=null){
+        if (uAuth.getCurrentUser() != null) {
 
             final String name = nameEt.getText().toString().trim();
             final String phone = phoneEt.getText().toString().trim();
             final String pass = passwordEt.getText().toString().trim();
 
-            uId = user.getUid();
-
-
             myRef.addValueEventListener(new ValueEventListener() {
+                private User userInfo;
+
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                    if(Objects.equals(dataSnapshot.child("users").child(uId).child("occupation").getValue(), "Student")){
-
-                        userStudent =dataSnapshot.child("student").child(uId).getValue(User.class);
-
-                        User user = new User(name,userStudent.department,phone,pass);
-                        FirebaseDatabase.getInstance().getReference("student")
-                                .child(uAuth.getCurrentUser().getUid()).setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                if (task.isSuccessful()){
-                                    Toast.makeText(UpdateProfileActivity.this,"Student's profile updated successfully!!",Toast.LENGTH_LONG).show();
-                                    startActivity(new Intent(UpdateProfileActivity.this,ProfileActivity.class));
+                    this.userInfo = dataSnapshot.getValue(User.class);
+                    User user1 = new User(userInfo.uId, name, userInfo.department, phone, userInfo.email,
+                            pass, userInfo.occupation, userInfo.deviceToken,
+                            userInfo.status, userInfo.approval);
+                    FirebaseDatabase.getInstance().getReference("users").child(uId).setValue(user1).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                if (user != null) {
+                                    user.updatePassword(pass).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if (task.isSuccessful()) {
+                                                Toast.makeText(UpdateProfileActivity.this, "Your profile updated successfully!!", Toast.LENGTH_LONG).show();
+                                                startActivity(new Intent(UpdateProfileActivity.this, ProfileActivity.class));
+                                            }
+                                        }
+                                    });
                                 }
 
-                            }
-                        });
-
-
-                    } else if (Objects.equals(dataSnapshot.child("personnel").child(uId).child("occupation").getValue(), "Personnel")) {
-
-                        userPersonnel =dataSnapshot.child("personnel").child(uId).getValue(User.class);
-                        User personnel = new User(name,userStudent.department,phone,pass);
-                        FirebaseDatabase.getInstance().getReference("personnel")
-                                .child(uAuth.getCurrentUser().getUid()).setValue(personnel).addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                if (task.isSuccessful()){
-                                    Toast.makeText(UpdateProfileActivity.this,"Personnel's profile updated successfully!!",Toast.LENGTH_LONG).show();
-                                    startActivity(new Intent(UpdateProfileActivity.this,ProfileActivity.class));
-                                }
 
                             }
-                        });
-                    }
+
+                        }
+                    });
+
                 }
 
                 @Override
@@ -165,7 +144,6 @@ public class UpdateProfileActivity extends AppCompatActivity implements View.OnC
 
                 }
             });
-
         }
 
     }

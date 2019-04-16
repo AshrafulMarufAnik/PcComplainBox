@@ -119,7 +119,10 @@ public class ManageUsersFragment extends Fragment {
                 for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                     myUser = dataSnapshot1.getValue(User.class);
                     if (myUser != null) {
-                        usersList.add(myUser);
+                        String usertype = myUser.occupation;
+                        if (!usertype.equals("Admin")) {
+                            usersList.add(myUser);
+                        }
                     }
                 }
                 userAdapter = new UserAdapter(getContext(), usersList);
@@ -142,8 +145,9 @@ public class ManageUsersFragment extends Fragment {
                 for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                     myUser = dataSnapshot1.getValue(User.class);
                     if (myUser != null) {
+                        String usertype = myUser.occupation;
                         String userDept = myUser.department;
-                        if (userDept.equals("CSE")) {
+                        if (userDept.equals("CSE") && !usertype.equals("Admin")) {
                             usersList.add(myUser);
                         }
                     }
@@ -169,8 +173,9 @@ public class ManageUsersFragment extends Fragment {
                 for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                     myUser = dataSnapshot1.getValue(User.class);
                     if (myUser != null) {
+                        String usertype = myUser.occupation;
                         String userDept = myUser.department;
-                        if (userDept.equals("EEE")) {
+                        if (userDept.equals("EEE") && !usertype.equals("Admin")) {
                             usersList.add(myUser);
                         }
                     }
@@ -195,8 +200,9 @@ public class ManageUsersFragment extends Fragment {
                 for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                     myUser = dataSnapshot1.getValue(User.class);
                     if (myUser != null) {
+                        String usertype = myUser.occupation;
                         String userDept = myUser.department;
-                        if (userDept.equals("BBA")) {
+                        if (userDept.equals("BBA") && !usertype.equals("Admin")) {
                             usersList.add(myUser);
                         }
                     }

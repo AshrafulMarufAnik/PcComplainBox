@@ -76,30 +76,31 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
 
     private void addingProfileDetails() {
 
-        uId = user.getUid();
-        myRef = FirebaseDatabase.getInstance().getReference("users").child(uId);
-        myRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                UserInfo = dataSnapshot.getValue(User.class);
-                if (UserInfo != null) {
-                    String name = UserInfo.name;
-                    String password = UserInfo.password;
-                    String email = UserInfo.email;
-                    String phone = UserInfo.phone;
-                    profileName.setText(name);
-                    profilePassword.setText(password);
-                    profileEmail.setText(email);
-                    profilePhone.setText(phone);
+        if (user != null) {
+            uId = user.getUid();
+            myRef = FirebaseDatabase.getInstance().getReference("users").child(uId);
+            myRef.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    UserInfo = dataSnapshot.getValue(User.class);
+                    if (UserInfo != null) {
+                        String name = UserInfo.name;
+                        String password = UserInfo.password;
+                        String email = UserInfo.email;
+                        String phone = UserInfo.phone;
+                        profileName.setText(name);
+                        profilePassword.setText(password);
+                        profileEmail.setText(email);
+                        profilePhone.setText(phone);
+                    }
                 }
-            }
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
 
-            }
-        });
-
+                }
+            });
+        }
     }
 
 
