@@ -5,7 +5,8 @@
     android:layout_height="match_parent"
     android:background="@drawable/bluepink"
     android:gravity="center"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:fitsSystemWindows="true">
 
     <LinearLayout
         android:layout_width="wrap_content"

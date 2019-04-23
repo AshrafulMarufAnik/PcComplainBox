@@ -9,6 +9,7 @@ import android.text.Html;
 import android.text.TextUtils;
 import android.util.Patterns;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -66,6 +67,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         progressBar = findViewById(R.id.progressBarId);
         String text = "Don't have an account? <font color='red'>Register</font>";
         registerTextView.setText(Html.fromHtml(text), TextView.BufferType.SPANNABLE);
+       // getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE|WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
     }
 
     public void onClick() {

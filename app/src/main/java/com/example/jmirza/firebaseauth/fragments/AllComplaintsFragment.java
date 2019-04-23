@@ -1,10 +1,8 @@
 package com.example.jmirza.firebaseauth.fragments;
 
 
-import android.app.DatePickerDialog;
-import android.app.Dialog;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
+import android.content.Intent;
+
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -19,14 +17,15 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.DatePicker;
-import android.widget.ImageView;
+import android.widget.Button;
+
 import android.widget.TextView;
-import android.widget.Toast;
+
 
 import com.example.jmirza.firebaseauth.R;
-import com.example.jmirza.firebaseauth.activities.LoginActivity;
+
 import com.example.jmirza.firebaseauth.activities.ProfileActivity;
+import com.example.jmirza.firebaseauth.activities.SearchActivity;
 import com.example.jmirza.firebaseauth.adapters.ComplainAdapter;
 import com.example.jmirza.firebaseauth.models.Complaint;
 import com.google.firebase.auth.FirebaseAuth;
@@ -38,11 +37,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
-import java.util.Objects;
 
-public class AllComplaintsFragment extends Fragment implements SearchView.OnQueryTextListener, View.OnClickListener, DatePickerDialog.OnDateSetListener {
+
+public class AllComplaintsFragment extends Fragment implements SearchView.OnQueryTextListener, View.OnClickListener {
 
     private View view;
     private Toolbar toolbar;
@@ -55,10 +53,7 @@ public class AllComplaintsFragment extends Fragment implements SearchView.OnQuer
     private FirebaseUser user;
     private Complaint allComplaints;
     private android.support.v7.widget.SearchView searchView;
-    private TextView from;
-    private TextView to;
-    private Dialog mDialogFrom;
-    private Dialog mDialogTo;
+    private Button searchBT;
 
 
     @Nullable
@@ -77,8 +72,7 @@ public class AllComplaintsFragment extends Fragment implements SearchView.OnQuer
         uAuth = FirebaseAuth.getInstance();
         user = uAuth.getCurrentUser();
         myRef = FirebaseDatabase.getInstance().getReference("complaints");
-        from = view.findViewById(R.id.fromID);
-        to = view.findViewById(R.id.toID);
+        searchBT = view.findViewById(R.id.searchBT);
 
         // setting up custom toolbar or actionbar
         toolbar = view.findViewById(R.id.toolbarID);
@@ -126,9 +120,7 @@ public class AllComplaintsFragment extends Fragment implements SearchView.OnQuer
     }
 
     private void onClick() {
-        from.setOnClickListener(this);
-        to.setOnClickListener(this);
-
+        searchBT.setOnClickListener(this);
     }
 
     @Override
@@ -167,26 +159,14 @@ public class AllComplaintsFragment extends Fragment implements SearchView.OnQuer
 
     @Override
     public void onClick(View view) {
-        if (view.getId()== R.id.fromID) {
-            showFromDatePickerDialog();
-        } /*else if (view.getId()==R.id.toID) {
-            showToDatePickerDialog();
-        }*/
+        if (view.getId() == R.id.searchBT) {
+            startActivity(new Intent(getActivity(), SearchActivity.class));
+        }
 
     }
 
- /*   private boolean showToDatePickerDialog() {
-        DatePickerDialog datePickerDialog = new DatePickerDialog(
-                getContext(),
-                this,
-                Calendar.getInstance().get(Calendar.YEAR),
-                Calendar.getInstance().get(Calendar.MONTH),
-                Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
-        datePickerDialog.show();
-        return true;
-    }*/
 
-    private void showFromDatePickerDialog() {
+  /*  private void showFromDatePickerDialog() {
         DatePickerDialog datePickerDialog = new DatePickerDialog(
                 getContext(),
                 this,
@@ -200,11 +180,11 @@ public class AllComplaintsFragment extends Fragment implements SearchView.OnQuer
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
             String dateFrom = "month/day/year: " + month + "/" + dayOfMonth + "/" + year;
             Toast.makeText(getActivity(), "month/day/year: from " + month + dayOfMonth + year , Toast.LENGTH_LONG).show();
-         /*else if (showToDatePickerDialog()) {
+         *//*else if (showToDatePickerDialog()) {
             String dateTo = "month/day/year: " + month + "/" + dayOfMonth + "/" + year;
             Toast.makeText(getActivity(), "month/day/year: to " + month + dayOfMonth + year , Toast.LENGTH_LONG).show();
-        }*/
+        }*//*
 
 
-    }
+    }*/
 }

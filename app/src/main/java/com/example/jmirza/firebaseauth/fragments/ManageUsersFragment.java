@@ -44,6 +44,9 @@ public class ManageUsersFragment extends Fragment {
     private List<User> usersList;
     private DatabaseReference myRef;
     private User myUser;
+    private FirebaseAuth uAuth;
+    private FirebaseUser user;
+    private String uId;
 
 
     @Nullable
@@ -68,7 +71,9 @@ public class ManageUsersFragment extends Fragment {
     }
 
     private void initialization() {
-
+        uAuth = FirebaseAuth.getInstance();
+        user = uAuth.getCurrentUser();
+        this.uId = user.getUid();
         myRef = FirebaseDatabase.getInstance().getReference("users");
         usersList = new ArrayList<>();
         // setting up custom toolbar or actionbar
@@ -119,8 +124,8 @@ public class ManageUsersFragment extends Fragment {
                 for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                     myUser = dataSnapshot1.getValue(User.class);
                     if (myUser != null) {
-                        String usertype = myUser.occupation;
-                        if (!usertype.equals("Admin")) {
+                        String userID = myUser.uId;
+                        if (!userID.equals(uId)) {
                             usersList.add(myUser);
                         }
                     }
@@ -145,9 +150,9 @@ public class ManageUsersFragment extends Fragment {
                 for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                     myUser = dataSnapshot1.getValue(User.class);
                     if (myUser != null) {
-                        String usertype = myUser.occupation;
+                        String userID = myUser.uId;
                         String userDept = myUser.department;
-                        if (userDept.equals("CSE") && !usertype.equals("Admin")) {
+                        if (userDept.equals("CSE") && !userID.equals(uId)) {
                             usersList.add(myUser);
                         }
                     }
@@ -173,9 +178,9 @@ public class ManageUsersFragment extends Fragment {
                 for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                     myUser = dataSnapshot1.getValue(User.class);
                     if (myUser != null) {
-                        String usertype = myUser.occupation;
+                        String userID = myUser.uId;
                         String userDept = myUser.department;
-                        if (userDept.equals("EEE") && !usertype.equals("Admin")) {
+                        if (userDept.equals("EEE") && !userID.equals(uId)) {
                             usersList.add(myUser);
                         }
                     }
@@ -200,9 +205,9 @@ public class ManageUsersFragment extends Fragment {
                 for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                     myUser = dataSnapshot1.getValue(User.class);
                     if (myUser != null) {
-                        String usertype = myUser.occupation;
+                        String userID = myUser.uId;
                         String userDept = myUser.department;
-                        if (userDept.equals("BBA") && !usertype.equals("Admin")) {
+                        if (userDept.equals("BBA") && !userID.equals(uId)) {
                             usersList.add(myUser);
                         }
                     }
