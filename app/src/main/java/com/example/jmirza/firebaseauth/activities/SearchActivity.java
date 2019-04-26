@@ -1,11 +1,13 @@
 package com.example.jmirza.firebaseauth.activities;
 
+import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.support.v4.app.DialogFragment;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -66,6 +68,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
 
         private int flag = 0;
 
+      //  @SuppressLint("ResourceType")
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
             Calendar calendar = Calendar.getInstance();
@@ -73,7 +76,9 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
             int month = calendar.get(Calendar.MONTH);
             int day = calendar.get(Calendar.DAY_OF_MONTH);
 
-            return new DatePickerDialog(getActivity(), this, year, month, day);
+           ContextThemeWrapper context = new ContextThemeWrapper(getActivity(), android.R.style.Theme_Holo_Dialog);
+
+            return new DatePickerDialog(context, this, year, month, day);
         }
 
         public void setFlag(int i) {

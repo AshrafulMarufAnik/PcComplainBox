@@ -37,6 +37,8 @@
     <string name="select_department">Select Department</string>
     <string name="department">Department</string>
     <string name="note">Note</string>
+    <string name="login">Login</string>
+
 
     // spinner collection
 
