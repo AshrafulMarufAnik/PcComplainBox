@@ -9,7 +9,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,6 +21,7 @@ import com.example.jmirza.firebaseauth.viewholder.MyUserViewHolder;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -32,6 +35,8 @@ public class UserAdapter extends RecyclerView.Adapter<MyUserViewHolder> {
     private List<User> myUsersList;
     private Context context;
     private Dialog mDialog;
+    private Spinner spinnerApproval,spinnerStatus;
+    private String[] userStatus;
     private DatabaseReference myRef;
 
     public UserAdapter(Context context, List<User> myUsersList) {
@@ -43,7 +48,8 @@ public class UserAdapter extends RecyclerView.Adapter<MyUserViewHolder> {
     @Override
     public MyUserViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(context).inflate(R.layout.users_row, viewGroup, false);
-        myRef = FirebaseDatabase.getInstance().getReference();
+        userStatus = context.getApplicationContext().getResources().getStringArray(R.array.userStatus);
+        myRef = FirebaseDatabase.getInstance().getReference("users");
         return new MyUserViewHolder(view);
     }
 
@@ -63,31 +69,41 @@ public class UserAdapter extends RecyclerView.Adapter<MyUserViewHolder> {
         mDialog.setContentView(R.layout.dialog_user);
         mDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
+        spinnerApproval = mDialog.findViewById(R.id.approvalSpinnerID);
+        spinnerStatus = mDialog.findViewById(R.id.statusSpinnerID);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(context, R.layout.spinner_view, R.id.spinnerTv, userStatus);
+        spinnerApproval.setAdapter(adapter);
+        spinnerStatus.setAdapter(adapter);
+
         myUserViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 final TextView userName = mDialog.findViewById(R.id.dialogUserTvID);
-                final TextView approval = mDialog.findViewById(R.id.dialogApprovalEtID);
-                final TextView status = mDialog.findViewById(R.id.dialogStatusEtID);
                 Button saveBt = mDialog.findViewById(R.id.dialogSaveBT);
                 userName.setText(user.name);
-                approval.setText(user.approval);
-                status.setText(user.status);
+                if (user.approval.equals("false")) {
+                    spinnerApproval.setSelection(0);
+                } else if (user.approval.equals("true")) {
+                    spinnerApproval.setSelection(1);
+                } else if (user.status.equals("true")) {
+                    spinnerStatus.setSelection(1);
+                } else if (user.status.equals("false")) {
+                    spinnerStatus.setSelection(0);
+                }
                 saveBt.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         String userID = user.uId;
-                        String approv = approval.getText().toString().trim();
-                        String state = status.getText().toString().trim();
+                        String approv = spinnerApproval.getSelectedItem().toString();
+                        String state = spinnerStatus.getSelectedItem().toString();
                         User editedUser = new User(userID, user.name, user.department, user.phone, user.email, user.password, user.occupation, user.deviceToken, state, approv);
 
                         if (userID != null) {
-                            FirebaseDatabase.getInstance().getReference("users").child(userID)
+                           myRef.child(userID)
                                     .setValue(editedUser).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if (task.isSuccessful()) {
-
                                         mDialog.dismiss();
                                     }
                                 }

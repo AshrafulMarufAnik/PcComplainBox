@@ -67,7 +67,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         progressBar = findViewById(R.id.progressBarId);
         String text = "Don't have an account? <font color='red'>Register</font>";
         registerTextView.setText(Html.fromHtml(text), TextView.BufferType.SPANNABLE);
-       // getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE|WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        // getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE|WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
     }
 
     public void onClick() {
@@ -155,7 +155,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                             switch (userType) {
                                                 case "User":
                                                     if (uAuth.getCurrentUser().isEmailVerified() && userPermit) {
-                                                        Toast.makeText(LoginActivity.this, "logged in as " + userType, Toast.LENGTH_LONG).show();
+                                                        //  Toast.makeText(LoginActivity.this, "logged in as " + userType, Toast.LENGTH_LONG).show();
                                                         myRef.child(uId).child("deviceToken").setValue(deviceToken);
                                                         finish();
                                                         Intent intent = new Intent(LoginActivity.this, ProfileActivity.class);
@@ -169,7 +169,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                                     break;
                                                 case "Personnel":
                                                     if (uAuth.getCurrentUser().isEmailVerified() && userPermit) {
-                                                        Toast.makeText(LoginActivity.this, "logged in as " + userType, Toast.LENGTH_LONG).show();
+                                                        // Toast.makeText(LoginActivity.this, "logged in as " + userType, Toast.LENGTH_LONG).show();
                                                         myRef.child(uId).child("deviceToken").setValue(deviceToken);
                                                         finish();
                                                         Intent intent = new Intent(LoginActivity.this, ProfileActivity.class);
@@ -184,7 +184,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                                     break;
                                                 case "Admin":
                                                     if (uAuth.getCurrentUser().isEmailVerified() && userPermit) {
-                                                        Toast.makeText(LoginActivity.this, "logged in as " + userType, Toast.LENGTH_LONG).show();
+                                                        //  Toast.makeText(LoginActivity.this, "logged in as " + userType, Toast.LENGTH_LONG).show();
                                                         myRef.child(uId).child("deviceToken").setValue(deviceToken);
                                                         finish();
                                                         Intent intent = new Intent(LoginActivity.this, ProfileActivity.class);
@@ -192,7 +192,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                                         startActivity(intent);
 
                                                     } else {
+                                                        Toast.makeText(LoginActivity.this, "Verify your email first to log in.if problem persists contact Admin", Toast.LENGTH_LONG).show();
                                                         Toast.makeText(LoginActivity.this, userPermit + userApproval + userStatus + "Verify your email first to log in.if problem persists contact Admin", Toast.LENGTH_LONG).show();
+
                                                         uAuth.signOut();
                                                     }
                                                     break;

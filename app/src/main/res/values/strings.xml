@@ -38,6 +38,11 @@
     <string name="department">Department</string>
     <string name="note">Note</string>
     <string name="login">Login</string>
+    <string name="please_pick_a_start_date">Please pick a start date</string>
+    <string name="please_pick_a_end_date">Please pick a end date</string>
+    <string name="status">Status</string>
+    <string name="approval">Approval</string>
+    <string name="complained_by">Complained by</string>
 
 
     // spinner collection
@@ -60,6 +65,11 @@
         <item>In Process</item>
         <item>Solved</item>
         <item>Unsolved</item>
+    </string-array>
+
+    <string-array name="userStatus">
+        <item>false</item>
+        <item>true</item>
     </string-array>
 
 
